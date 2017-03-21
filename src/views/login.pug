@@ -1,0 +1,13 @@
+extends layout
+block content
+  div
+    h1 Login
+    form(method='post', action='/login')
+      span Name:
+      input(type='text')
+      br
+      span Password
+      input(type='password')
+      br
+      input(type='submit', value='Login')
+      a(href='/signup') Signup
