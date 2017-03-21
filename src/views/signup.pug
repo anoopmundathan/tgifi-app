@@ -1,0 +1,17 @@
+extends layout
+block content
+  div
+    h1 Signup
+    form(method='post', action='/signup')
+      span Full Name:
+      input(type='text', placeholder='Full Name', name='fullname')
+      br
+      span Email:
+      input(type='text', placeholder='Email', name='email')
+      br
+      span Password
+      input(type='password', placeholder='Password', name='password')
+      input(type='submit', value='Signup')
+      br
+      span alredy have an account?.
+      a(href='/login') Login

@@ -1,6 +1,7 @@
 'use express';
 
 var express = require('express');
+var bodyParser = require('body-parser');
 var path = require('path');
 
 var app = express();
@@ -8,13 +9,14 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.get('/', function(req, res, next) {
-	res.render('login');
+	res.redirect('/login');
 });
 
-app.post('/login', function(req, res, next) {
-	res.send('submitted');
-});
+app.use('/', require('./routes/index'));
 
 app.use(function(req, res, next) {
 	var err = new Error('Resource not found');
