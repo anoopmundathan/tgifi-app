@@ -1,46 +1,19 @@
 'use strict';
 
 var express = require('express');
+var path = require('path');
+
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-
-	res.redirect('/login');
-});
-
-// GET /login
-router.get('/login', function(req, res, next) {
-	if (!req.cookies.access_token) {
-		res.render('login');	
-	} else {
-		res.send('<h1>alreay logged in</h1>');
+// Middleware function that checks all request if authenticated or not
+router.use('/', function(req, res, next) {
+	if (!req.cookies.token) {
+		return res.redirect('/login');
 	}
-	
+	next();
 });
 
-// POST /login
-router.post('/login', function(req, res, next) {
-
-	res.cookie('access_token', req.body.username, { httpOnly: true });
-	res.json({
-		username: req.body.username,
-		password: req.body.password
-	});
-
-});
-
-// GET /signup
-router.get('/signup', function(req, res, next) {
-	res.render('signup');
-});
-
-// POST /signup
-router.post('/signup', function(req, res, next) {
-	res.json({
-		fullname: req.body.fullname,
-		email: req.body.email,
-		password: req.body.password
-	});
-})
+// serve app once authenticated
+router.use('/', express.static(path.join(__dirname, '..', '..', 'public')));
 
 module.exports = router;

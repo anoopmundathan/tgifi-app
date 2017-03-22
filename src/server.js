@@ -14,7 +14,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use('/', require('./routes/index'));
+app.use('/app', require('./routes/index'));
+app.use('/login', require('./routes/login'));
+app.use('/signup', require('./routes/signup'));
+app.use('/api', require('./routes/api/index.js'));
+
+app.get('/', function(req, res, next) {
+	return res.redirect('/app');
+});
 
 app.use(function(req, res, next) {
 	var err = new Error('Resource not found');
