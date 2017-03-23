@@ -13,15 +13,26 @@ router.get('/', function(req, res, next) {
 // POST /login
 router.post('/', function(req, res, next) {
 
-	request.post({
-		url: config.apiUrl + 'authenticate',
-		form: req.body,
-		json: true
-	}, function(err, response, body) {
-		if (err) return next(err);
-		res.cookie('token', 'anoopmundathan');
-		return res.redirect('/');
-	});
+	if (req.body.username && req.body.password) {
+
+		request.post({
+			url: config.apiUrl + '/authenticate',
+			form: req.body,
+			json: true
+		}, function(err, response, body) {
+			if (err) return next(err);
+			
+			if (response.statusCode !== 200) {
+				return res.render('login', { error: body });
+			}
+			res.cookie('username', body.user.userName)
+			res.cookie('token', body.user.email);
+			return res.redirect('/');
+		});
+	} else {
+		var error = 'Must have username and password';
+		res.render('login', { error: error });
+	}
 
 });
 

@@ -1,12 +1,19 @@
 'use express';
 
 var express = require('express');
+var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var path = require('path');
+var mongoose = require('mongoose');
+
+var dbUrl = 'mongodb://localhost/tigifi' || process.env.MONGODB_URL;
+
+mongoose.connect(dbUrl);
 
 var app = express();
 
+app.use(morgan('dev'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 

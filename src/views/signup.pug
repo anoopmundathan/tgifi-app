@@ -3,8 +3,8 @@ block content
   div
     h1 Signup
     form(method='post', action='/signup')
-      span Full Name:
-      input(type='text', placeholder='Full Name', name='fullname')
+      span User Name:
+      input(type='text', placeholder='User Name', name='username')
       br
       span Email:
       input(type='text', placeholder='Email', name='email')
@@ -12,6 +12,7 @@ block content
       span Password
       input(type='password', placeholder='Password', name='password')
       input(type='submit', value='Signup')
+      br
       = error
 
       br
