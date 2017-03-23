@@ -2,6 +2,8 @@
 
 var express = require('express');
 var router = express.Router();
+var bcrypt = require('bcrypt');
+
 var User = require('../../models/user');
 
 router.post('/authenticate', authenticateUser);
@@ -11,10 +13,8 @@ function authenticateUser(req, res, next) {
 	var userName = req.body.username;
 	var password = req.body.password;
 
-
 	User.findOne({ 
-		userName: userName,
-		password: password
+		userName: userName
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
@@ -22,9 +22,19 @@ function authenticateUser(req, res, next) {
 		if (!user) {
 			return res.status(401).send('Username or password is incorrect');
 		}
-		res.json({
-			user: user
+
+		bcrypt.compare(password, user.password, function(err, response) {
+			if (err) return next(err);
+
+			if (response === true) {
+				res.json({
+					user: user
+				});	
+			} else {
+				return res.status(401).send('Password is not correct mate');
+			}
 		});
+		
 	});
 }
 
@@ -41,12 +51,10 @@ function registerNewUser(req, res, next) {
 
 	user.save(function(err) {
 		if (err) return next(err);
-		return res.json({
-			message: 'Registered'
-		});	
+		res.json({
+			message: "Registered"
+		});
 	});
-
-	
 }
 
 module.exports = router;
