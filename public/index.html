@@ -8,8 +8,17 @@
 	</head>
 	<body ng-app = "app" ng-controller = "MainController as vm">
 		<div class="container">
-			 <h1>OK</h1>
-			 {{ vm.message }}
+			<h1>tgifi app</h1>
+			<hr>
+			<a href="" ng-click="vm.logOut()">Logout</a><br>
+			 Welcome {{vm.user}} 
+			 <br>
+			 <a href="" ng-click="vm.loadHashTags()">#hastags</a>
+			 <ul>
+			 	<li ng-repeat = "hashtag in vm.hashtags">
+			 		{{hashtag}}
+			 	</li>
+			 </ul>
 		</div>
 	<script src="scripts/vendor.bundle.js"></script>	
 	<script src="scripts/app.bundle.js"></script>	

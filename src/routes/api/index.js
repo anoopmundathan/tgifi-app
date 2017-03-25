@@ -6,8 +6,16 @@ var bcrypt = require('bcrypt');
 
 var User = require('../../models/user');
 
+router.get('/hashtags', loadHashTags);
 router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
+
+function loadHashTags(req, res, next) {
+	
+	var hashtags = ['#london', '#paris', '#football', '#movies'];
+
+	res.json(hashtags);
+}
 
 function authenticateUser(req, res, next) {
 	var userName = req.body.username;
