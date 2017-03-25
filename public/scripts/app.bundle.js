@@ -17,27 +17,27 @@ app.controller('MainController', function($cookies, MainFactory) {
 	vm.user = $cookies.get('username');
 
 	vm.logOut = logOut;
-	vm.loadHashTags = loadHashTags;
+	vm.loadTrends = loadTrends;
 
 	function logOut() {
 		alert('logout');
 	}
 
-	function loadHashTags() {
-		MainFactory.loadHashTags()
+	function loadTrends() {
+		MainFactory.loadTrends()
 			.then(function success(response) {
-				vm.hashtags = response.data;
+				vm.trends = response.data[0].trends;
 			});
 	}
 });
 
 app.factory('MainFactory', function($http, API_URL) {
 	return {
-		loadHashTags: loadHashTags
+		loadTrends: loadTrends
 	}
 
-	function loadHashTags() {
-		return $http.get(API_URL + '/api/hashtags');
+	function loadTrends() {
+		return $http.get(API_URL + '/api/trends');
 	}
 
 });

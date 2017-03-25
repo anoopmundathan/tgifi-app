@@ -40,6 +40,7 @@
     "morgan": "1.8.1",
     "path": "0.12.7",
     "pug": "2.0.0-beta11",
-    "request": "2.81.0"
+    "request": "2.81.0",
+    "twitter-js-client": "0.0.5"
   }
 }

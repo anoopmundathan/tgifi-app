@@ -5,16 +5,17 @@ var router = express.Router();
 var bcrypt = require('bcrypt');
 
 var User = require('../../models/user');
+var twitter = require('../../controllers/twitter');
 
-router.get('/hashtags', loadHashTags);
+router.get('/trends', loadTrends);
 router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
 
-function loadHashTags(req, res, next) {
+function loadTrends(req, res, next) {
 	
-	var hashtags = ['#london', '#paris', '#football', '#movies'];
-
-	res.json(hashtags);
+	twitter.loadTrends(function(data) {
+		res.send(JSON.parse(data));
+	});
 }
 
 function authenticateUser(req, res, next) {
