@@ -5,6 +5,25 @@
 		 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		 <meta http-equiv="x-ua-compatible" content="ie=edge">
 		 <title>My App</title>
+		 <style>
+		 	html,
+		 	body,
+		 	.container {
+		 		width: 100%;
+		 		height: 100%
+		 	}
+		 	.gifi-container {
+		 		width: 100%;
+		 		display: flex;
+		 		flex-wrap: wrap;
+		 	}
+		 	.gifi-child {
+		 		width: 33.33%;
+		 	}
+		 	img {
+		 		width: 100%;
+		 	}
+		 </style>
 	</head>
 	<body ng-app = "app" ng-controller = "MainController as vm">
 		<div class="container">
@@ -14,11 +33,22 @@
 			 Welcome {{vm.user}} 
 			 <br>
 			 <a href="" ng-click="vm.loadTrends()">#hastags</a>
-			 <ul>
+			 <!-- <ul>
 			 	<li ng-repeat = "trend in vm.trends">
-			 		{{trend.name}}
+			 		{{trend.name}} <span>{{trend.tweet_volume}} </span>
 			 	</li>
-			 </ul>
+			 </ul> -->
+			 <!-- <ul>
+			 	<li ng-repeat = "gifi in vm.gifis">
+			 		<img ng-src="{{gifi.images.downsized.url}}" alt="">
+			 	</li>
+			 </ul> -->
+			 <div class="gifi-container">
+			 	<div class="gifi-child" ng-repeat = "gifi in vm.gifis">
+			 		<img ng-src="{{gifi.images.downsized.url}}" alt="">
+			 	</div>
+			 </div>
+			 {{vm.g}}
 		</div>
 	<script src="scripts/vendor.bundle.js"></script>	
 	<script src="scripts/app.bundle.js"></script>	

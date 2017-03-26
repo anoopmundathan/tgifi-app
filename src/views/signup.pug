@@ -3,14 +3,23 @@ block content
   div
     h1 Signup
     form(method='post', action='/signup')
-      span User Name:
-      input(type='text', placeholder='User Name', name='username')
+      span Full Name:
+      input(type='text', placeholder='Full Name', name='fullname')
       br
       span Email:
       input(type='text', placeholder='Email', name='email')
       br
+      span Country:
+      input(type='text', placeholder='Country', name='country')
+      br
+      span User Name:
+      input(type='text', placeholder='User Name', name='username')
+      br
       span Password
       input(type='password', placeholder='Password', name='password')
+      br
+      span Re-Password
+      input(type='password', placeholder='Re-Password', name='repassword')
       input(type='submit', value='Signup')
       br
       = error

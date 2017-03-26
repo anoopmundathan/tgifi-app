@@ -8,4 +8,9 @@ describe('Mocha', function() {
 	it('Should use npm', function() {
 		expect(true).to.be.false;
 	});
+
+	it('should return trends from twitter', function() {
+
+	});
+	
 });

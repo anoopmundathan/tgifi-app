@@ -14,7 +14,7 @@ router.post('/register', registerNewUser);
 function loadTrends(req, res, next) {
 	
 	twitter.loadTrends(function(data) {
-		res.send(JSON.parse(data));
+		res.json(data);
 	});
 }
 
