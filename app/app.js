@@ -12,6 +12,19 @@ app.controller('MainController', function($cookies, MainFactory) {
 
 	vm.logOut = logOut;
 	vm.loadTrends = loadTrends;
+	vm.showUrl = showUrl;
+
+	MainFactory.getGifi()
+		.then(function success(response) {
+			vm.gifi = response.data;
+		});
+
+	function showUrl(url) {
+		MainFactory.saveGifi(url)
+			.then(function success(response) {
+				console.log(response);
+			});
+	}
 
 	function logOut() {
 		alert('logout');
@@ -20,6 +33,7 @@ app.controller('MainController', function($cookies, MainFactory) {
 	function loadTrends() {
 		MainFactory.loadTrends()
 			.then(function success(response) {
+				console.log(response);
 				vm.gifis = response.data;
 			});
 	}
@@ -27,12 +41,21 @@ app.controller('MainController', function($cookies, MainFactory) {
 
 app.factory('MainFactory', function($http, API_URL) {
 	return {
-		loadTrends: loadTrends
+		loadTrends: loadTrends,
+		saveGifi: saveGifi,
+		getGifi: getGifi
 	}
 
 	function loadTrends() {
 		return $http.get(API_URL + '/api/trends');
 	}
 
+	function saveGifi(url) {
+		return $http.post(API_URL + '/api/save', {url: url});
+	}
+
+	function getGifi() {
+		return $http.get(API_URL + '/api/gifs');
+	}
 });
 

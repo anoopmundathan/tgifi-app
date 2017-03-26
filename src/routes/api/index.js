@@ -8,8 +8,35 @@ var User = require('../../models/user');
 var twitter = require('../../controllers/twitter');
 
 router.get('/trends', loadTrends);
+router.post('/save', saveGifi);
+router.get('/gifs', getGifis);
 router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
+
+function getGifis(req, res, next) {
+	User.findOne({
+		userName: req.cookies.username
+	})
+	.exec(function(err, user) {
+		if (err) return next(err);
+		res.json(user.gif);
+	});
+}
+
+function saveGifi(req, res, next) {
+	User.findOne({ 
+		userName: req.cookies.username
+	})
+	.exec(function(err, user) {
+		if (err) return next(err);
+		user.gif.push(req.body.url);
+
+		user.save(function(err) {
+			if (err) return next(err);
+			res.send(user);
+		});
+	});
+}
 
 function loadTrends(req, res, next) {
 	
