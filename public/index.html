@@ -33,22 +33,24 @@
 			 Welcome {{vm.user}} 
 			 <br>
 			 <a href="" ng-click="vm.loadTrends()">#hastags</a>
-			 <!-- <ul>
-			 	<li ng-repeat = "trend in vm.trends">
-			 		{{trend.name}} <span>{{trend.tweet_volume}} </span>
-			 	</li>
-			 </ul> -->
-			 <!-- <ul>
-			 	<li ng-repeat = "gifi in vm.gifis">
-			 		<img ng-src="{{gifi.images.downsized.url}}" alt="">
-			 	</li>
-			 </ul> -->
-			 <div class="gifi-container">
-			 	<div class="gifi-child" ng-repeat = "gifi in vm.gifis">
-			 		<img ng-src="{{gifi.images.downsized.url}}" alt="">
+
+			 <div class="gifi-container" ng-repeat = "gifi in vm.gifis">
+			 	<div class="gifi-child" ng-repeat = "g in gifi.data">
+			 		<img ng-src="{{g.images.downsized.url}}" alt="">
 			 	</div>
 			 </div>
-			 {{vm.g}}
+			 
+			 <!-- <ul>
+			 	<li ng-repeat = "gifi in vm.gifis">
+			 		<ul>
+			 			<li ng-repeat = "g in gifi.data">
+			 				
+			 				<img ng-src="{{g.images.downsized.url}}" alt="">
+			 			</li>
+			 		</ul>
+			 	</li>
+			 </ul> -->
+
 		</div>
 	<script src="scripts/vendor.bundle.js"></script>	
 	<script src="scripts/app.bundle.js"></script>	

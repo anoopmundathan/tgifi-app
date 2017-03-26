@@ -20,12 +20,7 @@ app.controller('MainController', function($cookies, MainFactory) {
 	function loadTrends() {
 		MainFactory.loadTrends()
 			.then(function success(response) {
-				var s = JSON.stringify(response.data);
-				vm.g = JSON.parse(s[0]);
-				
-				// console.log(response.data.data[0].images.downsized.url);
-				// vm.trends = response.data[0].trends;
-				// vm.gifis = response.data.data;
+				vm.gifis = response.data;
 			});
 	}
 });

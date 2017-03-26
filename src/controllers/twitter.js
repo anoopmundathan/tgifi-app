@@ -38,12 +38,14 @@ function loadTrends(callback) {
 
 		var gifiArray = [];
 		var itemProcessed = 0;
-		
+
 		data[0].trends.forEach(function(item, index, array) {
-			var query = item.name;
+			var query = item.name.split('#').join('');
+
 			giphy.searchGiphy(query, function(data) {
 				itemProcessed++;
-				if (data) gifiArray.push(data);
+				
+				if (data) gifiArray.push(JSON.parse(data));
 				if (itemProcessed === array.length) {
 					callback(gifiArray);
 				}
