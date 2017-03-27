@@ -50,14 +50,21 @@ function saveGifi(req, res, next) {
 
 function deleteGifi(req, res, next) {
 	
-	User.update({
+	User.findOne({
 		userName: req.cookies.username
-	}, {
-		$pull: {
-			gif: req.query.url
-		}
+	})
+	.exec(function(err, user) {
+		if (err) return next(err);
+		
+		user.update({
+			$pull: {
+				gif: req.query.url
+			}
+		}, function(err, user) {
+			if (err) return next(err);
+			res.send(user);
+		})
 	});
-	res.send('removed');
 }
 
 function loadTrends(req, res, next) {

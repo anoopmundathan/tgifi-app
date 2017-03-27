@@ -1,0 +1,27 @@
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	background: tomato;
+	font: normal 1.2em/1.5 "Helvetica Neue";
+	color: white;
+}
+
+ul {
+	list-style: none;
+}
+
+li {
+	display: inline-block;
+	padding: 10px;
+	transition: all .5s ease;
+}
+
+li:hover {
+	color: red;
+	transition: all .5s ease;
+}

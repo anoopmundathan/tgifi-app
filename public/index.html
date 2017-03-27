@@ -4,36 +4,27 @@
 		 <meta charset="utf-8">
 		 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		 <meta http-equiv="x-ua-compatible" content="ie=edge">
-		 <title>My App</title>
-		 <style>
-		 	html,
-		 	body,
-		 	.container {
-		 		width: 100%;
-		 		height: 100%
-		 	}
-		 	.gifi-container {
-		 		width: 100%;
-		 		display: flex;
-		 		flex-wrap: wrap;
-		 	}
-		 	.gifi-child {
-		 		width: 33.33%;
-		 	}
-		 	img {
-		 		width: 50%;
-		 	}
-		 </style>
+		 <title>tgifi</title>
+		 <link rel="stylesheet" href="styles/main.css">
 	</head>
 	<body ng-app = "app" ng-controller = "MainController as vm">
+		<header>
+			<h1>tgifi</h1>
+		</header>
+		<nav>
+			<ul>
+				<li ng-click="vm.loadMySavedGifis()">My Gifi</li>
+				<li ng-click="vm.loadRandomGifis()">Random Gifi</li>
+				<li ng-click="vm.logOut()">Logout</li>
+			</ul>
+		</nav>
+
 		<div class="container">
-			<h1>tgifi app</h1>
+			
 			<hr>
-			<a href="" ng-click="vm.logOut()">Logout</a><br>
 			 Welcome {{vm.user}} 
 			 <br>
-			 <a href="" ng-click="vm.loadTrends()">#hastags</a>
-			<div ng-repeat = "gi in vm.gifi">
+			<div class="container" ng-repeat = "gi in vm.gifi">
 				
 				<img ng-src="{{gi}}" alt=""> 
 				<button ng-click="vm.deleteGifi(gi)">Delete</button>
