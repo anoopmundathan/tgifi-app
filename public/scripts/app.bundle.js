@@ -19,8 +19,9 @@ app.controller('MainController', function($cookies, MainFactory) {
 	vm.logOut = logOut;
 	vm.loadTrends = loadTrends;
 	vm.showUrl = showUrl;
+	vm.deleteGifi = deleteGifi;
 
-	MainFactory.getGifi()
+	MainFactory.getGifis()
 		.then(function success(response) {
 			vm.gifi = response.data;
 		});
@@ -29,6 +30,13 @@ app.controller('MainController', function($cookies, MainFactory) {
 		MainFactory.saveGifi(url)
 			.then(function success(response) {
 				console.log(response);
+			});
+	}
+
+	function deleteGifi(url) {
+		MainFactory.deleteGifi(url)
+			.then(function success(response) {
+				console.log('deleted');
 			});
 	}
 
@@ -49,7 +57,8 @@ app.factory('MainFactory', function($http, API_URL) {
 	return {
 		loadTrends: loadTrends,
 		saveGifi: saveGifi,
-		getGifi: getGifi
+		deleteGifi: deleteGifi,
+		getGifis: getGifis
 	}
 
 	function loadTrends() {
@@ -57,11 +66,16 @@ app.factory('MainFactory', function($http, API_URL) {
 	}
 
 	function saveGifi(url) {
-		return $http.post(API_URL + '/api/save', {url: url});
+		return $http.post(API_URL + '/api/gifis', {url: url});
 	}
 
-	function getGifi() {
-		return $http.get(API_URL + '/api/gifs');
+	function getGifis() {
+		return $http.get(API_URL + '/api/gifis');
+	}
+
+	function deleteGifi(url) {
+		return $http.delete(API_URL + '/api/gifis?url=' + url );
+		// return $http.delete(API_URL + '/api/gifis' );
 	}
 });
 

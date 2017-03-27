@@ -8,8 +8,11 @@ var User = require('../../models/user');
 var twitter = require('../../controllers/twitter');
 
 router.get('/trends', loadTrends);
-router.post('/save', saveGifi);
-router.get('/gifs', getGifis);
+
+router.get('/gifis', getGifis);
+router.post('/gifis', saveGifi);
+router.delete('/gifis', deleteGifi);
+
 router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
 
@@ -19,7 +22,14 @@ function getGifis(req, res, next) {
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
-		res.json(user.gif);
+
+		if (user) {
+			res.json(user.gif)
+		} else {
+			res.json(user);
+		}
+
+		
 	});
 }
 
@@ -29,13 +39,25 @@ function saveGifi(req, res, next) {
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
-		user.gif.push(req.body.url);
-
-		user.save(function(err) {
+		
+		user.update({ $push: { gif: req.body.url} }, function(err, user) {
 			if (err) return next(err);
 			res.send(user);
 		});
+		
 	});
+}
+
+function deleteGifi(req, res, next) {
+	
+	User.update({
+		userName: req.cookies.username
+	}, {
+		$pull: {
+			gif: req.query.url
+		}
+	});
+	res.send('removed');
 }
 
 function loadTrends(req, res, next) {

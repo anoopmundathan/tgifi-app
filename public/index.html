@@ -35,7 +35,8 @@
 			 <a href="" ng-click="vm.loadTrends()">#hastags</a>
 			<div ng-repeat = "gi in vm.gifi">
 				
-				<img ng-src="{{gi}}" alt="">
+				<img ng-src="{{gi}}" alt=""> 
+				<button ng-click="vm.deleteGifi(gi)">Delete</button>
 			</div>
 			<div class="gifi-container">
 				<div class="gifi-child" ng-repeat = "gifi in vm.gifis">
