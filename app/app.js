@@ -4,6 +4,10 @@ var angular = require('angular');
 
 var app = angular.module('app', [require('angular-cookies'), require('angular-route')]);
 
+app.run(function($rootScope) {
+	$rootScope.randomGifis = [];
+});
+
 app.constant('API_URL', 'http://localhost:3000');
 
 app.config(function($routeProvider, $locationProvider) {
@@ -22,7 +26,7 @@ app.config(function($routeProvider, $locationProvider) {
 		});
 });
 
-app.controller('MainController', function($cookies, MainFactory) {
+app.controller('MainController', function($cookies, MainFactory, $rootScope) {
 	var vm = this;
 	
 	vm.user = $cookies.get('username');
@@ -36,12 +40,17 @@ app.controller('MainController', function($cookies, MainFactory) {
 		vm.myGifis = response.data;
 	});	
 
+	// Load random Gifis
+	MainFactory.loadRandomGifis()
+		.then(function success(response) {
+			$rootScope.randomGifis = response.data;
+	});
 	
 	function showUrl(url) {
 		MainFactory.saveGifi(url)
 			.then(function success(response) {
 				console.log(response);
-			});
+		});
 	}
 
 	function deleteGifi(url) {
@@ -58,16 +67,17 @@ app.controller('MainController', function($cookies, MainFactory) {
 	
 });
 
-app.controller('RandomGifiController', function(MainFactory) {
-
+app.controller('RandomGifiController', function(MainFactory, $rootScope) {
 	var vm = this;
-	
-	MainFactory.loadRandomGifis()
-		.then(function success(response) {
-			console.log(response);
-			vm.randomGifis = response.data;
-	});
+	vm.randomGifis = $rootScope.randomGifis;
 
+	if ($rootScope.randomGifis.length < 1) {
+		MainFactory.loadRandomGifis()
+			.then(function success(response) {
+				vm.randomGifis = response.data;
+				$rootScope.randomGifis = vm.randomGifis;
+		});
+	}
 });
 
 app.factory('MainFactory', function($http, API_URL) {
@@ -94,4 +104,10 @@ app.factory('MainFactory', function($http, API_URL) {
 		return $http.delete(API_URL + '/api/gifis?url=' + url );
 	}
 });
+
+// app.factory('shareData', function() {
+// 	return {
+// 		name: ['anoop', 'anvita', 'neethu']
+// 	}
+// });
 

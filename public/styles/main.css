@@ -25,3 +25,8 @@ li:hover {
 	color: red;
 	transition: all .5s ease;
 }
+
+.container {
+	width: 100%;
+	display: flex;
+}
