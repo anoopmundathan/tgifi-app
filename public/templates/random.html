@@ -1,6 +1,7 @@
-<div ng-repeat = "randomGifi in vm.randomGifis">
-	<h1>{{randomGifi.query}}</h1>
-	<div ng-repeat = "gifi in randomGifi.data">
+<h1>{{randomGifi.query}}</h1>
+<hr>
+<div class = "gifis-container" ng-repeat = "randomGifi in vm.randomGifis">
+	<div class="gifi-container" ng-repeat = "gifi in randomGifi.data">
 		<img ng-click="vm.showUrl(gifi.images.downsized.url)" ng-src="{{gifi.images.downsized.url}}" alt="">
 	</div>
 </div>
