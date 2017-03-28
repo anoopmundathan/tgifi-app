@@ -13,30 +13,14 @@
 		</header>
 		<nav>
 			<ul>
-				<li ng-click="vm.loadMySavedGifis()">My Gifi</li>
-				<li ng-click="vm.loadRandomGifis()">Random Gifi</li>
-				<li ng-click="vm.logOut()">Logout</li>
+				<li><a href="#/">My Gifis</a></li>
+				<li><a href="#/random">Random Gifis</a></li>
+				<li><a href="#/logout">Logout</a></li>
 			</ul>
 		</nav>
 
 		<div class="container">
-			
-			<hr>
-			 Welcome {{vm.user}} 
-			 <br>
-			<div class="container" ng-repeat = "gi in vm.gifi">
-				
-				<img ng-src="{{gi}}" alt=""> 
-				<button ng-click="vm.deleteGifi(gi)">Delete</button>
-			</div>
-			<div class="gifi-container">
-				<div class="gifi-child" ng-repeat = "gifi in vm.gifis">
-			 		<h1>{{gifi.query}}</h1>
-			 		<div ng-repeat = "g in gifi.data">
-			 			<img ng-click="vm.showUrl(g.images.downsized.url)" ng-src="{{g.images.downsized.url}}" alt="">
-			 		</div>
-				</div>
-			</div>
+			<ng-view></ng-view>
 		</div>
 	<script src="scripts/vendor.bundle.js"></script>	
 	<script src="scripts/app.bundle.js"></script>	

@@ -2,9 +2,25 @@
 
 var angular = require('angular');
 
-var app = angular.module('app', [require('angular-cookies')]);
+var app = angular.module('app', [require('angular-cookies'), require('angular-route')]);
 
 app.constant('API_URL', 'http://localhost:3000');
+
+app.config(function($routeProvider, $locationProvider) {
+	$locationProvider.hashPrefix('');
+
+	$routeProvider
+		.when('/', {
+			controller: 'MainController',
+			controllerAs: 'vm',
+			templateUrl: 'templates/gifis.html'
+		})
+		.when('/random', {
+			controller: 'RandomGifiController',
+			controllerAs: 'vm',
+			templateUrl: 'templates/random.html'
+		});
+});
 
 app.controller('MainController', function($cookies, MainFactory) {
 	var vm = this;
@@ -15,8 +31,6 @@ app.controller('MainController', function($cookies, MainFactory) {
 	vm.loadMySavedGifis = loadMySavedGifis;
 	vm.showUrl = showUrl;
 	vm.deleteGifi = deleteGifi;
-
-	
 
 	function loadMySavedGifis() {
 		MainFactory.loadMySavedGifis()
@@ -50,6 +64,10 @@ app.controller('MainController', function($cookies, MainFactory) {
 				vm.gifis = response.data;
 			});
 	}
+});
+
+app.controller('RandomGifiController', function() {
+
 });
 
 app.factory('MainFactory', function($http, API_URL) {
