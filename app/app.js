@@ -24,20 +24,18 @@ app.config(function($routeProvider, $locationProvider) {
 
 app.controller('MainController', function($cookies, MainFactory) {
 	var vm = this;
+	
 	vm.user = $cookies.get('username');
-
 	vm.logOut = logOut;
-	vm.loadRandomGifis = loadRandomGifis;
-	vm.loadMySavedGifis = loadMySavedGifis;
 	vm.showUrl = showUrl;
 	vm.deleteGifi = deleteGifi;
+	
+	// Load Saved Gifis
+	MainFactory.loadMySavedGifis()
+	.then(function success(response) {
+		vm.myGifis = response.data;
+	});	
 
-	function loadMySavedGifis() {
-		MainFactory.loadMySavedGifis()
-		.then(function success(response) {
-			vm.gifi = response.data;
-		});	
-	}
 	
 	function showUrl(url) {
 		MainFactory.saveGifi(url)
@@ -57,16 +55,18 @@ app.controller('MainController', function($cookies, MainFactory) {
 		alert('logout');
 	}
 
-	function loadRandomGifis() {
-		MainFactory.loadRandomGifis()
-			.then(function success(response) {
-				console.log(response);
-				vm.gifis = response.data;
-			});
-	}
+	
 });
 
-app.controller('RandomGifiController', function() {
+app.controller('RandomGifiController', function(MainFactory) {
+
+	var vm = this;
+	
+	MainFactory.loadRandomGifis()
+		.then(function success(response) {
+			console.log(response);
+			vm.randomGifis = response.data;
+	});
 
 });
 
