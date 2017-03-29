@@ -6,7 +6,6 @@
 
 html,
 body {
-	background: #fafafa;
 	font: normal 1.2em/1.5 "Helvetica Neue";
 }
 
@@ -36,7 +35,6 @@ img {
 .nav {
 	display: flex;
 	justify-content: space-around;
-	font-weight: 700;
 	list-style-type: none;
 	margin: 0 auto;
 	padding: 0;

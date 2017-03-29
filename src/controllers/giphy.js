@@ -16,10 +16,14 @@ Giphy.prototype.searchGiphy = function(param, callback) {
 Giphy.prototype.doRequest = function(url, callback) {
 	request(url, function(error, response, body) {
 
-		if (response.statusCode === 200) {
-			callback(body);	
-		}  else {
-			callback();
+		if (response) {
+			if (response.statusCode === 200) {
+				return callback(body);	
+			}  else {
+				return callback();
+			}
+		} else {
+			return callback();
 		}
 
 	});

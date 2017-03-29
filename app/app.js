@@ -31,7 +31,6 @@ app.controller('MainController', function($cookies, MainFactory, $rootScope) {
 	
 	vm.user = $cookies.get('username');
 	vm.logOut = logOut;
-	vm.showUrl = showUrl;
 	vm.deleteGifi = deleteGifi;
 	
 	// Load Saved Gifis
@@ -45,13 +44,6 @@ app.controller('MainController', function($cookies, MainFactory, $rootScope) {
 		.then(function success(response) {
 			$rootScope.randomGifis = response.data;
 	});
-	
-	function showUrl(url) {
-		MainFactory.saveGifi(url)
-			.then(function success(response) {
-				console.log(response);
-		});
-	}
 
 	function deleteGifi(url) {
 		MainFactory.deleteGifi(url)
@@ -63,13 +55,13 @@ app.controller('MainController', function($cookies, MainFactory, $rootScope) {
 	function logOut() {
 		alert('logout');
 	}
-
-	
 });
 
 app.controller('RandomGifiController', function(MainFactory, $rootScope) {
 	var vm = this;
+
 	vm.randomGifis = $rootScope.randomGifis;
+	vm.saveThisGifi = saveThisGifi;
 
 	if ($rootScope.randomGifis.length < 1) {
 		MainFactory.loadRandomGifis()
@@ -78,12 +70,18 @@ app.controller('RandomGifiController', function(MainFactory, $rootScope) {
 				$rootScope.randomGifis = vm.randomGifis;
 		});
 	}
+
+	function saveThisGifi(url) {
+		MainFactory.saveThisGifi(url)
+			.then(function success(response) {
+		});
+	}
 });
 
 app.factory('MainFactory', function($http, API_URL) {
 	return {
 		loadRandomGifis: loadRandomGifis,
-		saveGifi: saveGifi,
+		saveThisGifi: saveThisGifi,
 		deleteGifi: deleteGifi,
 		loadMySavedGifis: loadMySavedGifis
 	}
@@ -92,7 +90,7 @@ app.factory('MainFactory', function($http, API_URL) {
 		return $http.get(API_URL + '/api/trends');
 	}
 
-	function saveGifi(url) {
+	function saveThisGifi(url) {
 		return $http.post(API_URL + '/api/gifis', {url: url});
 	}
 
@@ -104,10 +102,4 @@ app.factory('MainFactory', function($http, API_URL) {
 		return $http.delete(API_URL + '/api/gifis?url=' + url );
 	}
 });
-
-// app.factory('shareData', function() {
-// 	return {
-// 		name: ['anoop', 'anvita', 'neethu']
-// 	}
-// });
 
