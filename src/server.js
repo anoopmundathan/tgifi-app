@@ -4,6 +4,7 @@ var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var path = require('path');
 var mongoose = require('mongoose');
 
@@ -19,6 +20,7 @@ app.set('view engine', 'pug');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session({ secret: 'kjh23432we@##@df', resave: true, saveUninitialized: false }));
 app.use(cookieParser());
 
 app.use('/app', require('./routes/index'));
@@ -28,6 +30,10 @@ app.use('/api', require('./routes/api/index.js'));
 
 app.get('/', function(req, res, next) {
 	return res.redirect('/app');
+});
+
+app.get('/logout', function(req, res, next) {
+	return res.redirect('/login');
 });
 
 app.use(function(req, res, next) {

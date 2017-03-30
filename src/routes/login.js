@@ -7,6 +7,10 @@ var router = express.Router();
 
 // GET /login
 router.get('/', function(req, res, next) {
+	
+	// Logout route
+	delete req.session.token;
+	
 	res.render('login');
 });
 
@@ -29,8 +33,10 @@ router.post('/', function(req, res, next) {
 			if (response.statusCode !== 200) {
 				return res.render('login', { error: body });
 			}
-			res.cookie('username', body.user.userName)
-			res.cookie('token', body.user.email);
+
+			// save token in session
+			req.session.token = body.token;
+
 			return res.redirect('/');
 		});
 	} else {

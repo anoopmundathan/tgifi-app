@@ -1,18 +1,19 @@
 'use strict';
 
 var express = require('express');
-var router = express.Router();
 var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+
+var router = express.Router();
 
 var User = require('../../models/user');
 var twitter = require('../../controllers/twitter');
+var secret = require('../../../config').secret;
 
 router.get('/trends', loadTrends);
-
 router.get('/gifis', getGifis);
 router.post('/gifis', saveGifi);
 router.delete('/gifis', deleteGifi);
-
 router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
 
@@ -72,24 +73,29 @@ function loadTrends(req, res, next) {
 	});
 }
 
+/**
+ * Authenticate user
+ */
 function authenticateUser(req, res, next) {
+
 	var userName = req.body.username;
 	var password = req.body.password;
 
 	authenticate(userName, password)
-		.then(function(user) {
-			console.log(user)
-			return res.json({
-				user: user
-			});
+		.then(function(token) {
+			return res.json({ token: token });
 		})
 		.catch(function(err) {
-			console.log(err);
 			return res.status(401).send(err);
 		});
 }
 
-// Authenticate user and return Promise
+/**
+ * User authentication 
+ * @param {Number} userName
+ * @param {Number} password
+ * @returns {Promise Object}
+ */
 function authenticate(userName, password) {
 
 	return new Promise(function(resolve, reject) {
@@ -99,19 +105,20 @@ function authenticate(userName, password) {
 		})
 		.exec(function(err, user) {
 
-			if (err) reject(err);
+			if (err) return reject(err);
 
 			if (!user) {
-				reject({error: 'User is not Found'});
+				return reject('User or Password is not correct');
 			}
 
 			bcrypt.compare(password, user.password, function(err, response) {
-				if (err) reject(err);
+				if (err) return reject(err);
 
 				if (response) {
-					resolve(user);
+					// Create token and send that token
+					return resolve(jwt.sign(user._id, secret));
 				} else {
-					reject({error: 'User or Password is not correct'});
+					return reject('User or Password is not correct');
 				}
 			});	
 		}); // end of User.findOne
