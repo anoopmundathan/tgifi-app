@@ -28,8 +28,6 @@ function getGifis(req, res, next) {
 		} else {
 			res.json(user);
 		}
-
-		
 	});
 }
 
@@ -78,29 +76,46 @@ function authenticateUser(req, res, next) {
 	var userName = req.body.username;
 	var password = req.body.password;
 
-	User.findOne({ 
-		userName: userName
-	})
-	.exec(function(err, user) {
-		if (err) return next(err);
-
-		if (!user) {
-			return res.status(401).send('Username or password is incorrect');
-		}
-
-		bcrypt.compare(password, user.password, function(err, response) {
-			if (err) return next(err);
-
-			if (response === true) {
-				res.json({
-					user: user
-				});	
-			} else {
-				return res.status(401).send('Password is not correct mate');
-			}
+	authenticate(userName, password)
+		.then(function(user) {
+			console.log(user)
+			return res.json({
+				user: user
+			});
+		})
+		.catch(function(err) {
+			console.log(err);
+			return res.status(401).send(err);
 		});
+}
+
+// Authenticate user and return Promise
+function authenticate(userName, password) {
+
+	return new Promise(function(resolve, reject) {
 		
-	});
+		User.findOne({ 
+			userName: userName 
+		})
+		.exec(function(err, user) {
+
+			if (err) reject(err);
+
+			if (!user) {
+				reject({error: 'User is not Found'});
+			}
+
+			bcrypt.compare(password, user.password, function(err, response) {
+				if (err) reject(err);
+
+				if (response) {
+					resolve(user);
+				} else {
+					reject({error: 'User or Password is not correct'});
+				}
+			});	
+		}); // end of User.findOne
+	}); // end of authPromise
 }
 
 function registerNewUser(req, res, next) {

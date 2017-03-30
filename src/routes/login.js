@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
 // POST /login
 router.post('/', function(req, res, next) {
 
+	// authenticate using api to maintain clean separation between layers
 	if (req.body.username && req.body.password) {
 
 		request.post({
@@ -20,7 +21,10 @@ router.post('/', function(req, res, next) {
 			form: req.body,
 			json: true
 		}, function(err, response, body) {
-			if (err) return next(err);
+
+			if (err) {
+            	return res.render('login', { error: 'An error occurred' });
+        	}
 			
 			if (response.statusCode !== 200) {
 				return res.render('login', { error: body });

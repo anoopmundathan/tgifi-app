@@ -1,6 +1,7 @@
 'use strict';
 
 var expect = require('chai').expect;
+var TwitterJSClient = require('twitter-js-client').Twitter;
 
 // Test suite
 describe('Mocha', function() {
@@ -8,9 +9,4 @@ describe('Mocha', function() {
 	it('Should use npm', function() {
 		expect(true).to.be.false;
 	});
-
-	it('should return trends from twitter', function() {
-
-	});
-	
 });
