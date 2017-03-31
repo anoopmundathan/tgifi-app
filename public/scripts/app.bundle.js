@@ -26,12 +26,14 @@ var angular = __webpack_require__(0);
 
 var app = angular.module('app', [__webpack_require__(1), __webpack_require__(2)]);
 
-app.run(function($rootScope, MainFactory) {
+app.run(function($rootScope, MainFactory, TokenFactory) {
 	$rootScope.randomGifis = [];
-	MainFactory.getToken()
+
+	MainFactory.getTokenFromServer()
 	.then(function(token) {
-		console.log(token);
+		TokenFactory.setToken(token.data);
 	});
+
 });
 
 app.constant('API_URL', 'http://localhost:3000');
@@ -110,10 +112,10 @@ app.factory('MainFactory', function($http, API_URL) {
 		saveThisGifi: saveThisGifi,
 		deleteGifi: deleteGifi,
 		loadMySavedGifis: loadMySavedGifis,
-		getToken: getToken
+		getTokenFromServer: getTokenFromServer
 	}
 
-	function getToken() {
+	function getTokenFromServer() {
 		return $http.get(API_URL + '/app/token');
 	}
 
@@ -134,6 +136,28 @@ app.factory('MainFactory', function($http, API_URL) {
 	}
 });
 
+app.factory('TokenFactory', function($window) {
+
+	var store = $window.localStorage;
+	var key = 'auth-token';
+
+	return {
+		getToken: getToken,
+		setToken: setToken
+	}
+
+	function getToken() {
+		return store.getItem(key);
+	}
+
+	function setToken(token) {
+		if (token) {
+			store.setItem(key, token);
+		} else {
+			store.removeItem();
+		}
+	}
+});
 
 
 /***/ }),
