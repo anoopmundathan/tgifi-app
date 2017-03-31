@@ -18,8 +18,9 @@ router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
 
 function getGifis(req, res, next) {
+	
 	User.findOne({
-		userName: req.cookies.username
+		userName: req.user
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
@@ -33,8 +34,9 @@ function getGifis(req, res, next) {
 }
 
 function saveGifi(req, res, next) {
+
 	User.findOne({ 
-		userName: req.cookies.username
+		userName: req.user
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
@@ -50,7 +52,7 @@ function saveGifi(req, res, next) {
 function deleteGifi(req, res, next) {
 	
 	User.findOne({
-		userName: req.cookies.username
+		userName: req.user
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
@@ -116,7 +118,8 @@ function authenticate(userName, password) {
 
 				if (response) {
 					// Create token and send that token
-					return resolve(jwt.sign(user._id, secret));
+					// return resolve(jwt.sign(user._id, secret));
+					return resolve(jwt.sign(user.userName, secret));
 				} else {
 					return reject('User or Password is not correct');
 				}

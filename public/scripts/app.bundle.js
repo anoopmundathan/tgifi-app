@@ -26,19 +26,11 @@ var angular = __webpack_require__(0);
 
 var app = angular.module('app', [__webpack_require__(1), __webpack_require__(2)]);
 
-app.run(function($rootScope, MainFactory, TokenFactory) {
-	$rootScope.randomGifis = [];
-
-	MainFactory.getTokenFromServer()
-	.then(function(token) {
-		TokenFactory.setToken(token.data);
-	});
-
-});
-
 app.constant('API_URL', 'http://localhost:3000');
 
-app.config(function($routeProvider, $locationProvider) {
+app.config(function($routeProvider, $httpProvider, $locationProvider) {
+	
+	$httpProvider.interceptors.push('AuthInterceptor');
 	$locationProvider.hashPrefix('');
 
 	$routeProvider
@@ -53,6 +45,16 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl: 'templates/random.html'
 		});
 });
+
+app.run(function($rootScope, MainFactory, TokenFactory) {
+	$rootScope.randomGifis = [];
+
+	MainFactory.getTokenFromServer()
+	.then(function(token) {
+		TokenFactory.setToken(token.data);
+	});
+});
+
 
 app.controller('MainController', function($cookies, MainFactory, $rootScope) {
 	var vm = this;
@@ -156,6 +158,22 @@ app.factory('TokenFactory', function($window) {
 		} else {
 			store.removeItem();
 		}
+	}
+});
+
+
+app.factory('AuthInterceptor', function(TokenFactory) {
+	return {
+		request: addToken
+	}
+
+	function addToken(config) {
+		var token = TokenFactory.getToken();
+		if (token) {
+			config.headers = config.headers || {};
+			config.headers.Authorization = 'Bearer ' + token;
+		}
+		return config;
 	}
 });
 
