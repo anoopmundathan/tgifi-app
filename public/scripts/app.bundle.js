@@ -3,15 +3,35 @@ webpackJsonp([0],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(4);
+module.exports = 'ngCookies';
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(5);
+module.exports = 'ngRoute';
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
 var angular = __webpack_require__(0);
 
-var app = angular.module('app', [__webpack_require__(4), __webpack_require__(6)]);
+var app = angular.module('app', [__webpack_require__(1), __webpack_require__(2)]);
 
-app.run(function($rootScope) {
+app.run(function($rootScope, MainFactory) {
 	$rootScope.randomGifis = [];
+	MainFactory.getToken()
+	.then(function(token) {
+		console.log(token);
+	});
 });
 
 app.constant('API_URL', 'http://localhost:3000');
@@ -89,7 +109,12 @@ app.factory('MainFactory', function($http, API_URL) {
 		loadRandomGifis: loadRandomGifis,
 		saveThisGifi: saveThisGifi,
 		deleteGifi: deleteGifi,
-		loadMySavedGifis: loadMySavedGifis
+		loadMySavedGifis: loadMySavedGifis,
+		getToken: getToken
+	}
+
+	function getToken() {
+		return $http.get(API_URL + '/app/token');
 	}
 
 	function loadRandomGifis() {
@@ -112,17 +137,7 @@ app.factory('MainFactory', function($http, API_URL) {
 
 
 /***/ }),
-/* 2 */,
-/* 3 */,
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(5);
-module.exports = 'ngCookies';
-
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports) {
 
 /**
@@ -459,15 +474,7 @@ angular.module('ngCookies').provider('$$cookieWriter', /** @this */ function $$C
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(7);
-module.exports = 'ngRoute';
-
-
-/***/ }),
-/* 7 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /**
@@ -1702,4 +1709,4 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 
 /***/ })
-],[1]);
+],[3]);

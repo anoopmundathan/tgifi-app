@@ -4,8 +4,12 @@ var angular = require('angular');
 
 var app = angular.module('app', [require('angular-cookies'), require('angular-route')]);
 
-app.run(function($rootScope) {
+app.run(function($rootScope, MainFactory) {
 	$rootScope.randomGifis = [];
+	MainFactory.getToken()
+	.then(function(token) {
+		console.log(token);
+	});
 });
 
 app.constant('API_URL', 'http://localhost:3000');
@@ -83,7 +87,12 @@ app.factory('MainFactory', function($http, API_URL) {
 		loadRandomGifis: loadRandomGifis,
 		saveThisGifi: saveThisGifi,
 		deleteGifi: deleteGifi,
-		loadMySavedGifis: loadMySavedGifis
+		loadMySavedGifis: loadMySavedGifis,
+		getToken: getToken
+	}
+
+	function getToken() {
+		return $http.get(API_URL + '/app/token');
 	}
 
 	function loadRandomGifis() {

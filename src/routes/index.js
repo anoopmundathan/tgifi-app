@@ -13,6 +13,9 @@ router.use('/', function(req, res, next) {
 	next();
 });
 
+router.get('/token', function(req, res, next) {
+	res.send(req.session.token);
+});
 // serve app once authenticated
 router.use('/', express.static(path.join(__dirname, '..', '..', 'public')));
 
