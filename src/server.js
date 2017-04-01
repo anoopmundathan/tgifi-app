@@ -3,29 +3,70 @@
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var expressJwt = require('express-jwt');
-var session = require('express-session');
 var path = require('path');
-var mongoose = require('mongoose');
 
+var mongoose = require('mongoose');
+var passport = require('passport');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+
+var User = require('./models/user');
+var expressJwt = require('express-jwt');
 var secretJwt = require('../config').secret;
 
-var dbUrl = 'mongodb://localhost/tigifi' || process.env.MONGODB_URL;
+// In order to use session for passport
+passport.serializeUser(function(user, done) {
+	done(null, user._id);
+});
 
-mongoose.connect(dbUrl);
+passport.deserializeUser(function(userId, done) {
+	User.findById(userId, done);
+});
 
 var app = express();
 
-app.use(morgan('dev'));
+// View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/api', expressJwt({ secret: secretJwt }).unless({ path: ['/api/authenticate', '/api/register'] }));
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/tgifi');
+var db = mongoose.connection;
+
+db.on('error', function(err) {
+	console.log('Error connecting to the database', err);
+});
+
+db.once('open', function() {
+	console.log('Succesfully connected to the database');
+});
+
+// Session config for Passport and MongoDB
+var sessionOptions = {
+	secret: 'my #secret $goes %here',
+	resave: true,
+	saveUninitialized: true,
+	store: new MongoStore({
+		mongooseConnection: db
+	})
+}
+
+app.use(session(sessionOptions));
+
+// Initialise passport
+app.use(passport.initialize());
+
+//Restore session
+app.use(passport.session());
 
 app.use(session({ secret: 'kjh23432we@##@df', resave: true, saveUninitialized: false }));
+
+app.use('/api', expressJwt({ secret: secretJwt }).unless({ path: ['/api/authenticate', '/api/register'] }));
+
+
 
 app.use('/app', require('./routes/index'));
 app.use('/login', require('./routes/login'));
