@@ -10,7 +10,8 @@ router.get('/', function(req, res, next) {
 	
 	// Logout route
 	delete req.session.token;
-	
+	delete req.session.user;
+
 	res.render('login');
 });
 
@@ -36,6 +37,7 @@ router.post('/', function(req, res, next) {
 
 			// save token in session
 			req.session.token = body.token;
+			req.session.user  = req.body.username;
 
 			return res.redirect('/');
 		});

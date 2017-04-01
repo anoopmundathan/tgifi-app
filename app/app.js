@@ -24,22 +24,25 @@ app.config(function($routeProvider, $httpProvider, $locationProvider) {
 		});
 });
 
-app.run(function($rootScope, MainFactory, TokenFactory) {
+app.run(function($rootScope, MainFactory, StorageFactory) {
 	$rootScope.randomGifis = [];
 
-	MainFactory.getTokenFromServer()
-	.then(function(token) {
-		TokenFactory.setToken(token.data);
+	MainFactory.getValueFromServer()
+	.then(function(data) {
+		StorageFactory.setValue('token', data.data.token);
+		StorageFactory.setValue('user', data.data.user);
 	});
 });
 
 
-app.controller('MainController', function($cookies, MainFactory, $rootScope) {
+app.controller('MainController', function($cookies, MainFactory, $rootScope, StorageFactory) {
 	var vm = this;
 	
 	vm.user = $cookies.get('username');
 	vm.logOut = logOut;
 	vm.deleteGifi = deleteGifi;
+
+	vm.user = StorageFactory.getValue('user');
 	
 	// Load Saved Gifis
 	MainFactory.loadMySavedGifis()
@@ -56,7 +59,6 @@ app.controller('MainController', function($cookies, MainFactory, $rootScope) {
 	function deleteGifi(url) {
 		MainFactory.deleteGifi(url)
 			.then(function success(response) {
-				console.log('deleted');
 			});
 	}
 
@@ -92,10 +94,10 @@ app.factory('MainFactory', function($http, API_URL) {
 		saveThisGifi: saveThisGifi,
 		deleteGifi: deleteGifi,
 		loadMySavedGifis: loadMySavedGifis,
-		getTokenFromServer: getTokenFromServer
+		getValueFromServer: getValueFromServer
 	}
 
-	function getTokenFromServer() {
+	function getValueFromServer() {
 		return $http.get(API_URL + '/app/token');
 	}
 
@@ -116,37 +118,33 @@ app.factory('MainFactory', function($http, API_URL) {
 	}
 });
 
-app.factory('TokenFactory', function($window) {
+app.factory('StorageFactory', function($window) {
 
 	var store = $window.localStorage;
-	var key = 'auth-token';
 
 	return {
-		getToken: getToken,
-		setToken: setToken
+		getValue: getValue,
+		setValue: setValue
 	}
 
-	function getToken() {
+	function getValue(key) {
 		return store.getItem(key);
 	}
 
-	function setToken(token) {
-		if (token) {
-			store.setItem(key, token);
-		} else {
-			store.removeItem();
-		}
+	function setValue(key, value) {
+		store.setItem(key, value);
 	}
 });
 
 
-app.factory('AuthInterceptor', function(TokenFactory) {
+app.factory('AuthInterceptor', function(StorageFactory) {
 	return {
-		request: addToken
+		request: addValue
 	}
 
-	function addToken(config) {
-		var token = TokenFactory.getToken();
+	function addValue(config) {
+		var token = StorageFactory.getValue('token');
+
 		if (token) {
 			config.headers = config.headers || {};
 			config.headers.Authorization = 'Bearer ' + token;
