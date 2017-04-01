@@ -7,12 +7,28 @@ var path = require('path');
 
 var mongoose = require('mongoose');
 var passport = require('passport');
+var GitHubStrategy = require('passport-github').Strategy;
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
 var User = require('./models/user');
 var expressJwt = require('express-jwt');
 var secretJwt = require('../config').secret;
+
+// Config GitHub Strategy
+passport.use(new GitHubStrategy({
+	clientID: process.env.GITHUB_CLIENT_ID,
+	clientSecret: process.env.GITHUB_CLIENT_SECRET,
+	callbackURL: "http://localhost:3000/auth/github/return"
+}, function(accessToken, refreshToken, profile, done) {
+	User.findOneAndUpdate({
+		userName: profile.username
+	}, {
+		userName: profile.username
+	}, {
+		upsert: true
+	}, done);
+}));
 
 // In order to use session for passport
 passport.serializeUser(function(user, done) {
@@ -62,12 +78,8 @@ app.use(passport.initialize());
 //Restore session
 app.use(passport.session());
 
-app.use(session({ secret: 'kjh23432we@##@df', resave: true, saveUninitialized: false }));
-
 app.use('/api', expressJwt({ secret: secretJwt }).unless({ path: ['/api/authenticate', '/api/register'] }));
-
-
-
+app.use('/auth', require('./routes/auth'));
 app.use('/app', require('./routes/index'));
 app.use('/login', require('./routes/login'));
 app.use('/signup', require('./routes/signup'));
@@ -78,6 +90,11 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/logout', function(req, res, next) {
+
+	// Logout route
+	delete req.session.token;
+	delete req.session.user;
+	req.logout();
 	return res.redirect('/login');
 });
 

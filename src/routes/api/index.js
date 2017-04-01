@@ -19,6 +19,7 @@ router.post('/register', registerNewUser);
 
 function getGifis(req, res, next) {
 	
+	console.log(req.user);
 	User.findOne({
 		userName: req.user
 	})
