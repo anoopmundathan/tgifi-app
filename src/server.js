@@ -3,7 +3,6 @@
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-// var cookieParser = require('cookie-parser');
 var expressJwt = require('express-jwt');
 var session = require('express-session');
 var path = require('path');
@@ -27,7 +26,6 @@ app.use(bodyParser.json());
 app.use('/api', expressJwt({ secret: secretJwt }).unless({ path: ['/api/authenticate', '/api/register'] }));
 
 app.use(session({ secret: 'kjh23432we@##@df', resave: true, saveUninitialized: false }));
-// app.use(cookieParser());
 
 app.use('/app', require('./routes/index'));
 app.use('/login', require('./routes/login'));
