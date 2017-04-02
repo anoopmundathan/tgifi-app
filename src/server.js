@@ -8,6 +8,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
@@ -15,7 +16,21 @@ var User = require('./models/user');
 var expressJwt = require('express-jwt');
 var secretJwt = require('../config').secret;
 
-// Config GitHub Strategy
+
+function generateOrFindUser(accessToken, refreshToken, profile, done) {
+	console.log('generateOrFindUser');
+    User.findOneAndUpdate({
+      email: profile.repos_url,
+    }, {
+      userName: profile.displayName,
+      email: profile.repos_url
+    }, {
+      upsert: true
+    }, 
+    done);
+}
+
+// Passport middleware - Config GitHub Strategy
 passport.use(new GitHubStrategy({
 	clientID: process.env.GITHUB_CLIENT_ID,
 	clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -30,13 +45,26 @@ passport.use(new GitHubStrategy({
 	}, done);
 }));
 
+// Configure Facebook strategy
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/return",
+    profileFields: ['id', 'displayName', 'photos', 'email']
+}, generateOrFindUser));
+
+
 // In order to use session for passport
 passport.serializeUser(function(user, done) {
-	done(null, user._id);
+	console.log('serializeUser');
+  done(null, user._id);
 });
 
-passport.deserializeUser(function(userId, done) {
-	User.findById(userId, done);
+passport.deserializeUser(function(value, done) {
+  console.log('deserializeUser');
+  User.findById(value, function(err, user) {
+    done(err, user);
+  });
 });
 
 var app = express();

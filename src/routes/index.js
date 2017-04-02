@@ -7,6 +7,7 @@ var router = express.Router();
 
 // Middleware function that checks all request if authenticated or not
 router.use('/', function(req, res, next) {
+
 	if (!req.session.token) {
 		return res.redirect('/login');
 	}
