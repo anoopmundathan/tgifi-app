@@ -5,7 +5,7 @@ block content
   main(class="content")
     div(class="container")
       div(class="login-heading")
-        h3 Login
+        p Login
       div(class="form-container")
         form(method='post', action='/login')
           div(class="name-container")
@@ -16,12 +16,12 @@ block content
             = error
           div(class="signin-container")
             button(type='submit') Sign In
-          div(class="or-container")
-            p OR
+          div(class="social-message")
+           p OR Login using your social account
           div(class="social-container")
             a(class="github" href='/auth/login/github') Github
             a(class="facebook" href='/auth/login/facebook') Facebook
-          div(class="donthave-container")
+          div(class="social-message")
             p don't have an account?.
           div(class="signup-container")
-            a(href='/signup') Signup
+            a(class="signup" href='/signup') Signup
