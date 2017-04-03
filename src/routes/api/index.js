@@ -19,8 +19,10 @@ router.post('/register', registerNewUser);
 
 function getGifis(req, res, next) {
 	
+	console.log(req.user._doc.userName);
+
 	User.findOne({
-		userName: req.user
+		userName: req.user._doc.userName
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);

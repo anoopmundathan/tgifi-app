@@ -3,12 +3,91 @@ html(lang='en')
   head
     title tgifi
     style.
-      body {
-        background: #fafafa;
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-     a {
-     	text-decoration: none;
-     	padding: 5px;
-     }
+
+      html,
+      body {
+      	font-family: 'Helvetica Neue';
+      	text-align: center;
+      	letter-spacing: 2px;
+      	color: dodgerblue;
+      }
+
+      header {
+      	width: 100%;
+        min-height: 50px;
+        background-image: radial-gradient(circle, lightblue, royalblue);
+      }
+
+      main, 
+      div {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        margin: 10px auto;
+      }
+      
+      .login-heading, 
+      .form-container {
+      	width: 80%;
+        margin: 10px auto;
+      }
+
+      .name-container,
+      .password-container {
+        min-height: 50px;
+      }
+
+      .signin-container {
+      	margin-top: 25px;
+      }
+
+      .or-container {
+        margin: 10px auto;
+      }
+
+      button {
+       height: 50px;
+       width: 100%;
+      }
+
+      input {
+      	width: 100%;
+        padding: 10px;
+        min-height: 50px;
+        font-size: 1em;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .social-container {
+        margin-top: 10px;
+        min-height: 50px;
+        display: inline-block;
+      }
+
+      .github,
+      .facebook {
+       background: lightblue;
+       margin: 10px;
+       padding: 10px;
+      }
+
+      .or-container {
+      	margin: 10px auto;
+      }
+      .donthave-container {
+        margin: 10px auto;
+      }
+
   body
     block content

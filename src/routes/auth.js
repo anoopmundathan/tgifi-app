@@ -20,7 +20,6 @@ router.get('/facebook/return',
 	passport.authenticate('facebook', { failureRedirect: '/' }),
 	function(req, res, next) {
 
-		console.log('facebook return', req.user);
 		// Save token
 		req.session.token = jwt.sign(req.user, secret);
 		req.session.user  = req.user

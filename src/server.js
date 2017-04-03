@@ -18,7 +18,6 @@ var secretJwt = require('../config').secret;
 
 
 function generateOrFindUser(accessToken, refreshToken, profile, done) {
-	console.log('generateOrFindUser');
     User.findOneAndUpdate({
       email: profile.repos_url,
     }, {
@@ -56,12 +55,10 @@ passport.use(new FacebookStrategy({
 
 // In order to use session for passport
 passport.serializeUser(function(user, done) {
-	console.log('serializeUser');
   done(null, user._id);
 });
 
 passport.deserializeUser(function(value, done) {
-  console.log('deserializeUser');
   User.findById(value, function(err, user) {
     done(err, user);
   });
