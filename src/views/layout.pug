@@ -3,7 +3,6 @@ html(lang='en')
   head
     title tgifi
     style.
-
       * {
         box-sizing: border-box;
         margin: 0;
@@ -19,12 +18,15 @@ html(lang='en')
       }
 
       header {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        min-height: 60px;
+        min-height: 80px;
         background: #6a60ad;
         color: #fafafa;
         text-align: center;
-        padding-top: 10px;
+        padding-top: 20px;
       }
 
       main, 
@@ -35,25 +37,35 @@ html(lang='en')
       }
 
       .container {
-        margin: 10px auto;
+        margin: 100px auto;
       }
       
       .login-heading, 
+      .signup-heading,
       .form-container {
       	width: 80%;
         margin: 20px auto;
       }
 
-      .login-heading {
+      .login-heading,
+      .signup-heading {
       	color: #6a60ad;
       	font-size: 1.3em;
       	text-align: center;
       }
      
       .password-container {
-        margin-top: 20px;
       }
-      .signin-container {
+
+      .error-container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #f1404b;
+      }
+      .signin-container,
+      .signup-container,
+      .login-container {
       	margin-top: 25px;
       }
 
@@ -91,7 +103,8 @@ html(lang='en')
 
       .github,
       .facebook,
-      .signup {
+      .signup,
+      .login {
       	width: 100%;
       	height: 50px;
       	display: block;
@@ -105,6 +118,41 @@ html(lang='en')
       .github,
       .facebook {
       	margin: 5px auto;
+      }
+
+      @media only screen and (min-width: 500px) {
+         .login-heading, 
+         .form-container {
+           width: 70%;
+        }
+      }
+
+      @media only screen and (min-width: 600px) {
+         .login-heading, 
+         .form-container {
+           width: 60%;
+        }
+      }
+
+      @media only screen and (min-width: 700px) {
+         .login-heading, 
+         .form-container {
+           width: 50%;
+        }
+      }
+
+      @media only screen and (min-width: 800px) {
+         .login-heading, 
+         .form-container {
+           width: 40%;
+        }
+      }
+
+       @media only screen and (min-width: 1000px) {
+         .login-heading, 
+         .form-container {
+           width: 30%;
+        }
       }
 
   body
