@@ -9,13 +9,13 @@ block content
       div(class="form-container")
         form(method='post', action='/login')
           div(class="name-container")
-            input(type='text', name="username", placeholder="User Name")
+            input(type='text', required, name="username", placeholder="User Name")
           div(class="password-container")
-            input(type='password' name="password", placeholder="Password")
+            input(type='password' required, name="password", placeholder="Password")
           div(class="error-container")
             p= error
           div(class="signin-container")
-            button(type='submit') Sign In
+            button(type='submit') Log In
           div(class="social-message")
            p OR Login using your social account
           div(class="social-container")
@@ -24,4 +24,4 @@ block content
           div(class="social-message")
             p don't have an account?.
           div(class="signup-container")
-            a(class="signup" href='/signup') Signup
+            a(class="signup" href='/signup') Sign Up

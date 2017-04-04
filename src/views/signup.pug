@@ -8,18 +8,18 @@ block content
         p Signup
       div(class="form-container")
         form(method='post', action='/signup')
-          div(class="full-name-container")
-            div(class="full-name-input")
-              input(type='text', placeholder='Full Name', name='fullname')
+          div(class="user-name-container")
+            div(class="user-name-input")
+              input(type='text', required, placeholder='User Name', name='username')
           div(class="email-container")
             div(class="email-input")
-              input(type='text', placeholder='Email', name='email')
+              input(type='email', required, placeholder='Email', name='email')
           div(class="password-container")
             div(class="password-input")
-              input(type='password', placeholder='Password', name='password')
-          div(class="repassword-container")
-            div(class="repassword-input")
-              input(type='password', placeholder='Re-Password', name='repassword')
+              input(type='password', required, placeholder='Password', name='password')
+          div(class="confirm-password-container")
+            div(class="confirm-input")
+              input(type='password', required, placeholder='Confirm Password', name='confirmpassword')
           div(class="error-container")
             p= error
           div(class="signup-container")
@@ -27,4 +27,4 @@ block content
           div(class="social-message")
             p alredy have an account?.
           div(class="login-container")
-            a(class="login" href='/login') Login
+            a(class="login" href='/login') Log In

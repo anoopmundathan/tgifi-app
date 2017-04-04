@@ -1,7 +1,6 @@
 'use strict';
 
 var expect = require('chai').expect;
-var TwitterJSClient = require('twitter-js-client').Twitter;
 
 // Test suite
 describe('Mocha', function() {
@@ -9,4 +8,21 @@ describe('Mocha', function() {
 	it('Should use npm', function() {
 		expect(true).to.be.false;
 	});
+
+	it('Should validate login form', function() {
+
+	});
 });
+
+describe('Log In', function() {
+	it('Should validate Log In form', function() {
+
+	});
+});
+
+describe('Sign Up', function() {
+	it('Should validate Sign Up form', function() {
+
+	});
+});
+

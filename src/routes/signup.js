@@ -17,17 +17,23 @@ router.post('/', function(req, res, next) {
 	var userName = req.body.username;
 	var email =  req.body.email;
 	var password = req.body.password;
+	var confirmPassword = req.body.confirmpassword;
 
 	if (userName && email && password) {
 
-		request.post({
-			url: config.apiUrl + '/register',
-			form: req.body,
-			json: true
-		}, function(err, response, body) {
-			if (err) return next(err);
-			return res.redirect('/');
-		});
+		if (password === confirmPassword) {
+			request.post({
+				url: config.apiUrl + '/register',
+				form: req.body,
+				json: true
+			}, function(err, response, body) {
+				if (err) return next(err);
+				return res.redirect('/');
+			});
+		} else {
+			return res.render('signup' , { error: 'Passwords do not match'} );
+		}
+
 	} else {
 		return res.render('signup' , { error: 'Must enter all values'} );
 	}
