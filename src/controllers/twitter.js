@@ -13,12 +13,6 @@ function Twitter(config) {
 
 Twitter.prototype = Object.create(TwitterJSClient.prototype);
 
-Twitter.prototype.getTrendLocations = function(error, success) {
-	var path = '/trends/available.json';
-	var url = this.baseUrl + path;
-	this.doRequest(url, error, success)
-}
-
 Twitter.prototype.getTrends = function(error, success) {
 	var path = '/trends/place.json?id=23424977';
 	var url = this.baseUrl + path;
@@ -55,8 +49,6 @@ function loadTrends(callback) {
 		})
 	};
 
-	
-	// twitter.getTrendLocations(error, success);
 	twitter.getTrends(error, success);
 
 	var giphy = new Giphy();
