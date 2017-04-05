@@ -1,14 +1,12 @@
 'use strict';
 
 var TwitterJSClient = require('twitter-js-client').Twitter;
+var twitterConfig = require('../../config').twitter;
 var Giphy = require('./giphy').Giphy;
 
-
-var config = require('../../twitter.json');
-
 // Sub class of TwitterJSClient
-function Twitter(config) {
-	TwitterJSClient.call(this, config);
+function Twitter(twitterConfig) {
+	TwitterJSClient.call(this, twitterConfig);
 }
 
 Twitter.prototype = Object.create(TwitterJSClient.prototype);
@@ -19,7 +17,7 @@ Twitter.prototype.getTrends = function(error, success) {
 	this.doRequest(url, error, success);
 }
 
-var twitter = new Twitter(config);
+var twitter = new Twitter(twitterConfig);
 
 function loadTrends(callback) {
 

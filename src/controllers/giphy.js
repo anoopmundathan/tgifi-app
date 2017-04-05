@@ -1,10 +1,11 @@
 'use strict';
 
 var request = require('request');
+var giphy = require('../../config').giphy;
 
 function Giphy() {
-	this.apiUrl = 'http://api.giphy.com/v1';
-	this.apiKey = 'dc6zaTOxFJmzC';
+	this.apiUrl = giphy.apiUrl;
+	this.apiKey = giphy.apiUrl;
 }
 
 Giphy.prototype.searchGiphy = function(param, callback) {

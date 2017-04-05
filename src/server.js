@@ -14,8 +14,10 @@ var MongoStore = require('connect-mongo')(session);
 
 var User = require('./models/user');
 var expressJwt = require('express-jwt');
-var secretJwt = require('../config').secret;
 
+var secretJwt = require('../config').secret;
+var fbConfig = require('../config').facebook;
+var ghConfig = require('../config').github;
 
 function generateOrFindUser(accessToken, refreshToken, profile, done) {
 	if (profile.emails) {
@@ -36,16 +38,16 @@ function generateOrFindUser(accessToken, refreshToken, profile, done) {
 
 // Passport middleware - Config GitHub Strategy
 passport.use(new GitHubStrategy({
-	clientID: process.env.GITHUB_CLIENT_ID,
-	clientSecret: process.env.GITHUB_CLIENT_SECRET,
-	callbackURL: "http://localhost:3000/auth/github/return"
+	clientID: process.env.GITHUB_CLIENT_ID || ghConfig.clientID,
+	clientSecret: process.env.GITHUB_CLIENT_SECRET || ghConfig.clientSecret,
+	callbackURL: ghConfig.callbackURL
 }, generateOrFindUser));
 
 // Configure Facebook strategy
 passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/return",
+    clientID: process.env.FACEBOOK_APP_ID || fbConfig.clientID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET || fbConfig.clientSecret,
+    callbackURL: fbConfig.callbackURL,
     profileFields: ['id', 'displayName', 'photos', 'email']
 }, generateOrFindUser));
 
