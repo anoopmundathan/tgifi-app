@@ -123,7 +123,7 @@ function authenticate(userName, password) {
 					// return resolve(jwt.sign(user._id, secret));
 					return resolve(jwt.sign(user.userName, secret));
 				} else {
-					return reject('User or Password is not correct');
+					return reject('User Name or Password is not correct');
 				}
 			});	
 		}); // end of User.findOne
@@ -135,6 +135,7 @@ function registerNewUser(req, res, next) {
 	var email = req.body.email;
 	var password = req.body.password;
 
+
 	var user = new User({
 		userName: userName,
 		email: email,
@@ -142,10 +143,11 @@ function registerNewUser(req, res, next) {
 	});
 
 	user.save(function(err) {
-		if (err) return next(err);
-		res.json({
-			message: "Registered"
-		});
+		if (err) {
+			return res.json({ message: err });
+		} else {
+			return res.json({ message: "Registered" });	
+		}
 	});
 }
 

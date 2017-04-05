@@ -28,6 +28,7 @@ router.post('/', function(req, res, next) {
 				json: true
 			}, function(err, response, body) {
 				if (err) return next(err);
+				console.log(err);
 				return res.redirect('/');
 			});
 		} else {

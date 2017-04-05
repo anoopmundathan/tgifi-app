@@ -20,6 +20,7 @@ var userSchema = new Schema({
 		type: String,
 		required: [true, 'Password is required']
 	},
+	photo: String,
 	gif: [String]
 });
 

@@ -8,10 +8,9 @@ var router = express.Router();
 // GET /login
 router.get('/', function(req, res, next) {
 	
-	// Logout route
-	// delete req.session.token;
-	// delete req.session.user;
-
+	delete req.session.token;
+	delete req.session.user;
+	req.logout();
 	res.render('login');
 });
 

@@ -18,15 +18,20 @@ var secretJwt = require('../config').secret;
 
 
 function generateOrFindUser(accessToken, refreshToken, profile, done) {
-    User.findOneAndUpdate({
-      email: profile.repos_url,
-    }, {
-      userName: profile.displayName,
-      email: profile.repos_url
-    }, {
-      upsert: true
-    }, 
-    done);
+	if (profile.emails) {
+		User.findOneAndUpdate({
+			email: profile.emails[0].value
+		}, {
+			userName: profile.username || profile.displayName,
+			email: profile.emails[0].value,
+			photo: profile.photos[0].value
+		}, {
+			upsert: true
+		}, done);
+	} else {
+		var noEmailError = new Error('Your email privacy settings prevent you from login to tgifi');
+		done(noEmailError, null);
+	}
 }
 
 // Passport middleware - Config GitHub Strategy
@@ -34,15 +39,7 @@ passport.use(new GitHubStrategy({
 	clientID: process.env.GITHUB_CLIENT_ID,
 	clientSecret: process.env.GITHUB_CLIENT_SECRET,
 	callbackURL: "http://localhost:3000/auth/github/return"
-}, function(accessToken, refreshToken, profile, done) {
-	User.findOneAndUpdate({
-		userName: profile.username
-	}, {
-		userName: profile.username
-	}, {
-		upsert: true
-	}, done);
-}));
+}, generateOrFindUser));
 
 // Configure Facebook strategy
 passport.use(new FacebookStrategy({
@@ -51,7 +48,6 @@ passport.use(new FacebookStrategy({
     callbackURL: "http://localhost:3000/auth/facebook/return",
     profileFields: ['id', 'displayName', 'photos', 'email']
 }, generateOrFindUser));
-
 
 // In order to use session for passport
 passport.serializeUser(function(user, done) {
