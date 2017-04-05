@@ -8,13 +8,22 @@ var Schema = mongoose.Schema;
 
 // Create Schema
 var userSchema = new Schema({
-	userName: String,
-	email: String,
-	password: String,
+	userName: {
+		type: String,
+		required: [true, 'User Name is required']
+	},
+	email: {
+		type: String,
+		required: [true, 'Email is required']
+	},
+	password: {
+		type: String,
+		required: [true, 'Password is required']
+	},
 	gif: [String]
 });
 
-// Hash password
+// Hash password before saving
 userSchema.pre('save', function(next) {
 	var user = this;
 	bcrypt.hash(user.password, 10, function(err, hash) {

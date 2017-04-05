@@ -21,6 +21,22 @@ describe('Log In', function() {
 });
 
 describe('Sign Up', function() {
+	it('Should validate User Name', function() {
+
+	});
+
+	it('Should validate email', function() {
+
+	});
+
+	it('Should validate password strength', function() {
+
+	});
+
+	it('Should validate confirm password', function() {
+
+	});
+	
 	it('Should validate Sign Up form', function() {
 
 	});
