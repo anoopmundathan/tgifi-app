@@ -22,6 +22,7 @@ body {
 img {
 	width: 100%;
 	height: 100%;
+	border-radius: 3px;
 }
 
 .main-nav {
@@ -56,14 +57,30 @@ a {
 	color: black;
 }
 
-.gifis-container {
+.random-container {
 	width: 100%;
 }
 
+.query-container {
+	width: 100%;
+	margin: 10px auto;
+	text-align: center;
+}
+
 @media screen and (min-width: 600px) {
+
+	.query-container {
+		width: 50%;
+	}
+
 	.gifis-container {
-		background: dodgerblue;
-		width: 600px;
+		width: 50%;
 		margin: 0 auto;
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.gifi-container {
+		width: 33.33%;
 	}
 }

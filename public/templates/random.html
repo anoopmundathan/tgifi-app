@@ -1,6 +1,15 @@
-<div class = "gifis-container" ng-repeat = "randomGifi in vm.randomGifis">
-	<h3>{{randomGifi.query}}
-	<div class="gifi-container" ng-repeat = "gifi in randomGifi.data">
-		<img ng-click = "vm.saveThisGifi(gifi.images.downsized.url)" ng-src="{{gifi.images.downsized.url}}" alt="">	
+<div class = "random-container" ng-repeat = "randomGifi in vm.randomGifis">
+
+	<div class = "query-container">
+		<p>{{randomGifi.query}}</p>	
 	</div>
+
+	<div class="gifis-container">
+
+		<div class="gifi-container" ng-repeat = "gifi in randomGifi.data">
+			<img ng-click = "vm.saveThisGifi(gifi.images.downsized.url)" ng-src="{{gifi.images.downsized.url}}" alt="">	
+		</div>		
+
+	</div>
+
 </div>
