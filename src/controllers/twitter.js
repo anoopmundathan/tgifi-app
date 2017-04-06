@@ -12,7 +12,8 @@ function Twitter(twitterConfig) {
 Twitter.prototype = Object.create(TwitterJSClient.prototype);
 
 Twitter.prototype.getTrends = function(error, success) {
-	var path = '/trends/place.json?id=23424977';
+	// var path = '/trends/place.json?id=23424977';
+	var path = '/trends/place.json?id=1';
 	var url = this.baseUrl + path;
 	this.doRequest(url, error, success);
 }
@@ -23,6 +24,7 @@ function loadTrends(callback) {
 
 	var error = function (err, response, body) {
     	console.log('ERROR [%s]', JSON.stringify(err));
+    	callback(err);
 	};
 	
 	var success = function (data) {
@@ -35,14 +37,16 @@ function loadTrends(callback) {
 			var query = item.name.split('#').join('');
 			
 			giphy.searchGiphy(query, function(data) {
+
 				itemProcessed++;
 				
-				var data = JSON.parse(data);
-				data.query = query;
-				if (data.data.length > 0 && data) gifiArray.push(data);
-				if (itemProcessed === array.length) {
-					callback(gifiArray);
-				}
+				 if (data) {
+				 	var data = JSON.parse(data);
+				 	data.query = query;
+				 	if (data.data.length > 0) gifiArray.push(data);
+				 }
+
+				 if (itemProcessed === array.length) callback(gifiArray);
 			});
 		})
 	};

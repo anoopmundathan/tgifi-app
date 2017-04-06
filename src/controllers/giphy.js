@@ -5,7 +5,7 @@ var giphy = require('../../config').giphy;
 
 function Giphy() {
 	this.apiUrl = giphy.apiUrl;
-	this.apiKey = giphy.apiUrl;
+	this.apiKey = giphy.apiKey;
 }
 
 Giphy.prototype.searchGiphy = function(param, callback) {
@@ -21,10 +21,10 @@ Giphy.prototype.doRequest = function(url, callback) {
 			if (response.statusCode === 200) {
 				return callback(body);	
 			}  else {
-				return callback();
+				return callback(null);
 			}
 		} else {
-			return callback();
+			return callback(null);
 		}
 
 	});
