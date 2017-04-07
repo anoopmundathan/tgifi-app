@@ -2,11 +2,9 @@
 
 var express = require('express');
 var router = express.Router();
-
 var passport = require('passport');
-
 var jwt = require('jsonwebtoken');
-var secret = require('../../config').secret;
+var secret = require('../../config/config').secret;
 
 router.get('/', function(req, res) {
 	res.send('auth page');
@@ -18,7 +16,6 @@ function saveToSession(req, res, next) {
 	req.session.user  = req.user.userName
 	return res.redirect('/');
 }
-
 
 // GET /auth/login/facebook
 router.get('/login/facebook', passport.authenticate('facebook', { scope: ["email"]}));

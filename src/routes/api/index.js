@@ -3,12 +3,13 @@
 var express = require('express');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+var auth = require('basic-auth');
 
 var router = express.Router();
 
 var User = require('../../models/user');
 var twitter = require('../../controllers/twitter');
-var secret = require('../../../config').secret;
+var secret = require('../../../config/config').secret;
 
 router.get('/trends', loadTrends);
 router.get('/gifis', getGifis);
@@ -18,9 +19,9 @@ router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
 
 function getGifis(req, res, next) {
-	
+
 	User.findOne({
-		userName: req.user._doc.userName
+		userName: req.user
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
@@ -118,8 +119,7 @@ function authenticate(userName, password) {
 
 				if (response) {
 					// Create token and send that token
-					// return resolve(jwt.sign(user._id, secret));
-					return resolve(jwt.sign(user.userName, secret));
+					return resolve(jwt.sign(user._id, secret));
 				} else {
 					return reject('User Name or Password is not correct');
 				}

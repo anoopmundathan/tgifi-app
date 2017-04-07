@@ -1,8 +1,15 @@
 'use strict';
 
 var TwitterJSClient = require('twitter-js-client').Twitter;
-var twitterConfig = require('../../config').twitter;
+var config = require('../../config/config').twitter;
 var Giphy = require('./giphy').Giphy;
+
+var twitterConfig = {
+	consumerKey: process.env.TWITTER_API_KEY || config.consumerKey,
+	consumerSecret: process.env.TWITTER_API_SECRET || config.consumerSecret,
+	accessToken: process.env.TWITTER_ACCESS_TOKEN || config.accessToken,
+	accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET || config.accessTokenSecret
+}
 
 // Sub class of TwitterJSClient
 function Twitter(twitterConfig) {

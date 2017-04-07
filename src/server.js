@@ -15,9 +15,12 @@ var MongoStore = require('connect-mongo')(session);
 var User = require('./models/user');
 var expressJwt = require('express-jwt');
 
-var secretJwt = require('../config').secret;
-var fbConfig = require('../config').facebook;
-var ghConfig = require('../config').github;
+var dbUrl = require('../config/config').dbUrl;
+var secretJwt = require('../config/config').secret;
+var fbConfig = require('../config/config').facebook;
+var ghConfig = require('../config/config').github;
+
+var app = express();
 
 function generateOrFindUser(accessToken, refreshToken, profile, done) {
 	if (profile.emails) {
@@ -36,18 +39,23 @@ function generateOrFindUser(accessToken, refreshToken, profile, done) {
 	}
 }
 
+// sets port, host, and callback_url either with heroku constants or locally
+
+var PORT = process.env.PORT || 3000;
+var HOST = process.env.PROD_HOST || 'http://localhost:' + PORT;
+
 // Passport middleware - Config GitHub Strategy
 passport.use(new GitHubStrategy({
 	clientID: process.env.GITHUB_CLIENT_ID || ghConfig.clientID,
 	clientSecret: process.env.GITHUB_CLIENT_SECRET || ghConfig.clientSecret,
-	callbackURL: ghConfig.callbackURL
+	callbackURL: HOST + '/auth/github/return'
 }, generateOrFindUser));
 
 // Configure Facebook strategy
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID || fbConfig.clientID,
     clientSecret: process.env.FACEBOOK_APP_SECRET || fbConfig.clientSecret,
-    callbackURL: fbConfig.callbackURL,
+    callbackURL: HOST + '/auth/facebook/return',
     profileFields: ['id', 'displayName', 'photos', 'email']
 }, generateOrFindUser));
 
@@ -62,8 +70,6 @@ passport.deserializeUser(function(value, done) {
   });
 });
 
-var app = express();
-
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -72,7 +78,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/tgifi');
+// Connect to the database
+mongoose.connect(process.env.MONGODB_URI || dbUrl);
 var db = mongoose.connection;
 
 db.on('error', function(err) {
@@ -134,7 +141,6 @@ app.use(function(err, req, res, next) {
 	});
 });
 
-app.set('PORT', process.env.PORT || 3000);
-app.listen(app.get('PORT'), function() {
-	console.log('Server running at port ', app.get('PORT'));
+app.listen(PORT, function() {
+	console.log('Server running at port ', PORT);
 });

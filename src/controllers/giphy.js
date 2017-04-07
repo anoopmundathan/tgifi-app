@@ -1,15 +1,15 @@
 'use strict';
 
 var request = require('request');
-var giphy = require('../../config').giphy;
+var giphy = require('../../config/config').giphy;
 
 function Giphy() {
-	this.apiUrl = giphy.apiUrl;
-	this.apiKey = giphy.apiKey;
+	this.apiUrl = process.env.GIPHY_API_URL || giphy.apiUrl;
+	this.apiKey = process.env.GIPHY_API_KEY || giphy.apiKey;
 }
 
 Giphy.prototype.searchGiphy = function(param, callback) {
-	var path = '/gifs/search?q=' + param + '&api_key=' + this.apiKey;
+	var path = '/gifs/search?q=' + param + '&api_key=' + this.apiKey + '&limit=9';
 	var url = this.apiUrl + path;
 	this.doRequest(url, callback);
 }

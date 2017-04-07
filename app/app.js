@@ -35,14 +35,14 @@ app.run(function($rootScope, MainFactory, StorageFactory) {
 });
 
 
-app.controller('MainController', function($cookies, MainFactory, $rootScope, StorageFactory) {
+app.controller('MainController', function(MainFactory, $rootScope, StorageFactory) {
 	var vm = this;
 	
-	vm.user = $cookies.get('username');
 	vm.logOut = logOut;
 	vm.deleteGifi = deleteGifi;
-
 	vm.user = StorageFactory.getValue('user');
+
+	console.log(vm.user);
 	
 	// Load Saved Gifis
 	MainFactory.loadMySavedGifis()
@@ -82,6 +82,7 @@ app.controller('RandomGifiController', function(MainFactory, $rootScope) {
 	}
 
 	function saveThisGifi(url) {
+		console.log(url);
 		MainFactory.saveThisGifi(url)
 			.then(function success(response) {
 		});
@@ -144,6 +145,7 @@ app.factory('AuthInterceptor', function(StorageFactory) {
 
 	function addValue(config) {
 		var token = StorageFactory.getValue('token');
+		var user = StorageFactory.getValue('user');
 
 		if (token) {
 			config.headers = config.headers || {};
