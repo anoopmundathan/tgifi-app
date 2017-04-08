@@ -128,7 +128,7 @@ app.factory('MainFactory', function($http) {
 	}
 });
 
-app.factory('AuthInterceptor', function(StorageFactory, $cookies) {
+app.factory('AuthInterceptor', function($cookies) {
 	return {
 		request: addValue
 	}
