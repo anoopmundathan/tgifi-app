@@ -4,6 +4,7 @@ var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var path = require('path');
+var cors = require('cors');
 
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -21,6 +22,9 @@ var fbConfig = require('../config/config').facebook;
 var ghConfig = require('../config/config').github;
 
 var app = express();
+
+console.log('cors removed');
+// app.use(cors());
 
 function generateOrFindUser(accessToken, refreshToken, profile, done) {
 	if (profile.emails) {
@@ -44,6 +48,7 @@ function generateOrFindUser(accessToken, refreshToken, profile, done) {
 var PORT = process.env.PORT || 3000;
 var HOST = process.env.PROD_HOST || 'http://localhost:' + PORT;
 
+console.log(HOST);
 // Passport middleware - Config GitHub Strategy
 passport.use(new GitHubStrategy({
 	clientID: process.env.GITHUB_CLIENT_ID || ghConfig.clientID,

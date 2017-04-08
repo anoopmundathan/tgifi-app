@@ -19,8 +19,8 @@ function Twitter(twitterConfig) {
 Twitter.prototype = Object.create(TwitterJSClient.prototype);
 
 Twitter.prototype.getTrends = function(error, success) {
-	// var path = '/trends/place.json?id=23424977';
-	var path = '/trends/place.json?id=1';
+	var path = '/trends/place.json?id=23424977';
+	// var path = '/trends/place.json?id=1';
 	var url = this.baseUrl + path;
 	this.doRequest(url, error, success);
 }

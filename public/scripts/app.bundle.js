@@ -26,7 +26,6 @@ var angular = __webpack_require__(0);
 
 var app = angular.module('app', [__webpack_require__(1), __webpack_require__(2)]);
 
-app.constant('API_URL', 'http://localhost:3000');
 
 app.config(function($routeProvider, $httpProvider, $locationProvider) {
 	
@@ -46,25 +45,17 @@ app.config(function($routeProvider, $httpProvider, $locationProvider) {
 		});
 });
 
-app.run(function($rootScope, MainFactory, StorageFactory) {
+app.run(function($rootScope) {
 	$rootScope.randomGifis = [];
-
-	MainFactory.getValueFromServer()
-	.then(function(data) {
-		StorageFactory.setValue('token', data.data.token);
-		StorageFactory.setValue('user', data.data.user);
-	});
 });
 
 
-app.controller('MainController', function(MainFactory, $rootScope, StorageFactory) {
+app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
 	var vm = this;
 	
 	vm.logOut = logOut;
 	vm.deleteGifi = deleteGifi;
-	vm.user = StorageFactory.getValue('user');
-
-	console.log(vm.user);
+	vm.user = $cookies.get('user');
 	
 	// Load Saved Gifis
 	MainFactory.loadMySavedGifis()
@@ -111,63 +102,39 @@ app.controller('RandomGifiController', function(MainFactory, $rootScope) {
 	}
 });
 
-app.factory('MainFactory', function($http, API_URL) {
+app.factory('MainFactory', function($http) {
 	return {
 		loadRandomGifis: loadRandomGifis,
 		saveThisGifi: saveThisGifi,
 		deleteGifi: deleteGifi,
-		loadMySavedGifis: loadMySavedGifis,
-		getValueFromServer: getValueFromServer
+		loadMySavedGifis: loadMySavedGifis
 	}
 
-	function getValueFromServer() {
-		return $http.get(API_URL + '/app/token');
-	}
 
 	function loadRandomGifis() {
-		return $http.get(API_URL + '/api/trends');
+		return $http.get('/api/trends');
 	}
 
 	function saveThisGifi(url) {
-		return $http.post(API_URL + '/api/gifis', {url: url});
+		return $http.post('/api/gifis', {url: url});
 	}
 
 	function loadMySavedGifis() {
-		return $http.get(API_URL + '/api/gifis');
+		return $http.get('/api/gifis');
 	}
 
 	function deleteGifi(url) {
-		return $http.delete(API_URL + '/api/gifis?url=' + url );
+		return $http.delete('/api/gifis?url=' + url );
 	}
 });
 
-app.factory('StorageFactory', function($window) {
-
-	var store = $window.localStorage;
-
-	return {
-		getValue: getValue,
-		setValue: setValue
-	}
-
-	function getValue(key) {
-		return store.getItem(key);
-	}
-
-	function setValue(key, value) {
-		store.setItem(key, value);
-	}
-});
-
-
-app.factory('AuthInterceptor', function(StorageFactory) {
+app.factory('AuthInterceptor', function(StorageFactory, $cookies) {
 	return {
 		request: addValue
 	}
 
 	function addValue(config) {
-		var token = StorageFactory.getValue('token');
-		var user = StorageFactory.getValue('user');
+		var token = $cookies.get('token');
 
 		if (token) {
 			config.headers = config.headers || {};
