@@ -4,7 +4,10 @@ var express = require('express');
 var request = require('request');
 
 var router = express.Router();
-var config = require('../../config/config');
+
+var PORT = process.env.PORT || 3000;
+var HOST = process.env.PROD_HOST || 'http://localhost:' + PORT;
+var API_URL = HOST + '/api/register';
 
 // GET /signup
 router.get('/', function(req, res, next) {
@@ -18,10 +21,6 @@ router.post('/', function(req, res, next) {
 	var email =  req.body.email;
 	var password = req.body.password;
 	var confirmPassword = req.body.confirmpassword;
-
-	var PORT = process.env.PORT || 3000;
-	var HOST = process.env.PROD_HOST || 'http://localhost:' + PORT;
-	var API_URL = HOST + '/api/register';
 
 	if (userName && email && password) {
 

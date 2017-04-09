@@ -1,6 +1,7 @@
 {
     "dbUrl": "mongodb://localhost/tgifi",
-    "secret": "Secret goes here",
+    "secretSession": "Session secret goes here",
+    "secretJwt": "Secret goes here",
     "twitter": {
     	"consumerKey": "l69v5uKOdiZMZ2GkdLdaPRbQx",
 		"consumerSecret": "qvVEGeCJlvgALgclX4aluR5Qnqtz1vxGnRxJ9raNKLHgrnl4fn",

@@ -4,7 +4,6 @@ var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var path = require('path');
-var cors = require('cors');
 
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -17,14 +16,12 @@ var User = require('./models/user');
 var expressJwt = require('express-jwt');
 
 var dbUrl = require('../config/config').dbUrl;
-var secretJwt = require('../config/config').secret;
+var secretSession = require('../config/config').secretSession;
+var secretJwt = require('../config/config').secretJwt;
 var fbConfig = require('../config/config').facebook;
 var ghConfig = require('../config/config').github;
 
 var app = express();
-
-console.log('cors removed');
-// app.use(cors());
 
 function generateOrFindUser(accessToken, refreshToken, profile, done) {
 	if (profile.emails) {
@@ -44,7 +41,6 @@ function generateOrFindUser(accessToken, refreshToken, profile, done) {
 }
 
 // sets port, host, and callback_url either with heroku constants or locally
-
 var PORT = process.env.PORT || 3000;
 var HOST = process.env.PROD_HOST || 'http://localhost:' + PORT;
 
@@ -97,7 +93,7 @@ db.once('open', function() {
 
 // Session config for Passport and MongoDB
 var sessionOptions = {
-	secret: 'my #secret $goes %here',
+	secret: process.env.SECRET_SESSION || secretSession,
 	resave: true,
 	saveUninitialized: true,
 	store: new MongoStore({
@@ -113,7 +109,8 @@ app.use(passport.initialize());
 //Restore session
 app.use(passport.session());
 
-app.use('/api', expressJwt({ secret: secretJwt }).unless({ path: ['/api/authenticate', '/api/register'] }));
+app.use('/api', expressJwt({ secret: process.env.SECRET_JWT || secretJwt }).
+	unless({ path: ['/api/authenticate', '/api/register'] }));
 app.use('/auth', require('./routes/auth'));
 app.use('/app', require('./routes/index'));
 app.use('/login', require('./routes/login'));

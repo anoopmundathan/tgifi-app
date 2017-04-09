@@ -4,7 +4,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
-var secret = require('../../config/config').secret;
+var secretJwt = require('../../config/config').secretJwt;
+var secret = process.env.SECRET_JWT || secretJwt;
 
 router.get('/', function(req, res) {
 	res.send('auth page');
@@ -13,7 +14,7 @@ router.get('/', function(req, res) {
 
 function saveToSession(req, res, next) {
 	req.session.token = jwt.sign(req.user._id, secret);
-	req.session.user  = req.user.userName
+	req.session.user  = req.user.userName;
 	return res.redirect('/');
 }
 

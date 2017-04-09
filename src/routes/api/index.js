@@ -9,7 +9,8 @@ var router = express.Router();
 
 var User = require('../../models/user');
 var twitter = require('../../controllers/twitter');
-var secret = require('../../../config/config').secret;
+var secretJwt = require('../../../config/config').secretJwt;
+var secret = process.env.SECRET_JWT || secretJwt;
 
 router.get('/trends', loadTrends);
 router.get('/gifis', getGifis);
@@ -19,6 +20,7 @@ router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
 
 function getGifis(req, res, next) {
+
 
 	User.findOne({
 		userName: req.user
