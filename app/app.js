@@ -4,7 +4,6 @@ var angular = require('angular');
 
 var app = angular.module('app', [require('angular-cookies'), require('angular-route')]);
 
-
 app.config(function($routeProvider, $httpProvider, $locationProvider) {
 	
 	$httpProvider.interceptors.push('AuthInterceptor');

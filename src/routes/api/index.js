@@ -23,7 +23,7 @@ function getGifis(req, res, next) {
 
 
 	User.findOne({
-		userName: req.user
+		userName: req.session.user
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
@@ -38,11 +38,15 @@ function getGifis(req, res, next) {
 
 function saveGifi(req, res, next) {
 
+	console.log(req.session.user);
+
 	User.findOne({ 
-		userName: req.user
+		userName: req.session.user
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
+		
+		console.log(user);
 		
 		user.update({ $push: { gif: req.body.url} }, function(err, user) {
 			if (err) return next(err);

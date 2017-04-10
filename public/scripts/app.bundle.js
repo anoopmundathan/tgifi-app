@@ -61,6 +61,7 @@ app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
 	MainFactory.loadMySavedGifis()
 	.then(function success(response) {
 		vm.myGifis = response.data;
+		console.log(vm.myGifis);
 	});	
 
 	// Load random Gifis

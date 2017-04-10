@@ -20,8 +20,8 @@ body {
 }
 
 img {
-	width: 100%;
-	height: 100%;
+	width: 200px;
+	height: 200px;
 	cursor: pointer;
 }
 
@@ -61,26 +61,60 @@ a {
 	width: 100%;
 }
 
+.gif-container {
+	margin: 2px;
+}
+
 .query-container {
 	width: 100%;
 	margin: 10px auto;
 	text-align: center;
 }
 
+.my-container {
+	width: 100%;
+}
+
+img {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
 @media screen and (min-width: 600px) {
 
-	.query-container {
-		width: 50%;
+	img {
+		height: 180px;
 	}
 
-	.gifis-container {
-		width: 50%;
+	.gifis-container,
+	.my-container {
+		width: 70%;
 		margin: 0 auto;
 		display: flex;
 		flex-wrap: wrap;
 	}
 
-	.gifi-container {
-		width: 33.33%;
+	.query-container {
+		width: 70%;
 	}
+
+	.my-gifis-container, 
+	.gifi-container {
+		width: 50%;
+	}
+}
+
+@media screen and (min-width: 800px) {
+
+	.gifis-container,
+	.my-container,
+	.query-container {
+		width: 60%;
+	}
+
+	.my-gifis-container,
+	.gifi-container {
+		width: 33%;
+	}	
 }

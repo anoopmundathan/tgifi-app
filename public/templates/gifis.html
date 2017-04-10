@@ -1,9 +1,7 @@
-<h1>Welcome</h1>
-<div class = "gifis-container" ng-repeat = "gifi in vm.myGifis">
-	<div  class = "gif-container">
-		<img ng-src="{{gifi}}" alt=""> 
-		<button ng-click="vm.deleteGifi(gifi)">Delete</button>
+<div class="my-container">
+	<div class = "my-gifis-container" ng-repeat = "gifi in vm.myGifis track by $index">
+		<div  class = "my-gif-img-container">
+			<img ng-src="{{gifi}}" alt=""> 
+		</div>
 	</div>
 </div>
-
-<h1>Hello - {{vm.user}}</h1>

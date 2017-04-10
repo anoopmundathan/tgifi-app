@@ -44,7 +44,6 @@ function generateOrFindUser(accessToken, refreshToken, profile, done) {
 var PORT = process.env.PORT || 3000;
 var HOST = process.env.PROD_HOST || 'http://localhost:' + PORT;
 
-console.log(HOST);
 // Passport middleware - Config GitHub Strategy
 passport.use(new GitHubStrategy({
 	clientID: process.env.GITHUB_CLIENT_ID || ghConfig.clientID,

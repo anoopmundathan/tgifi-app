@@ -23,7 +23,6 @@ router.post('/', function(req, res, next) {
 	var confirmPassword = req.body.confirmpassword;
 
 	if (userName && email && password) {
-
 		if (password === confirmPassword) {
 			request.post({
 				url: API_URL,
@@ -36,11 +35,9 @@ router.post('/', function(req, res, next) {
 		} else {
 			return res.render('signup' , { error: 'Passwords do not match'} );
 		}
-
 	} else {
 		return res.render('signup' , { error: 'Must enter all values'} );
 	}
-
 });
 
 module.exports = router;
