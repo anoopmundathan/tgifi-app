@@ -1,0 +1,23 @@
+{
+    "dbUrl": "mongodb://localhost/tgifi",
+    "secretSession": "Session secret goes here",
+    "secretJwt": "Secret goes here",
+    "twitter": {
+    	"consumerKey": "l69v5uKOdiZMZ2GkdLdaPRbQx",
+		"consumerSecret": "qvVEGeCJlvgALgclX4aluR5Qnqtz1vxGnRxJ9raNKLHgrnl4fn",
+		"accessToken": "53978496-T4cJzlfxJAArfkgk2BCZknGJU038TfJ6Q5c6YsBaZ",
+		"accessTokenSecret": "8BpPw0B1ypezopwyz0qjS2NXrz2vSDCwS95AvaEzXfcCc"
+    },
+    "giphy": {
+    	"apiUrl": "http://api.giphy.com/v1",
+		"apiKey": "dc6zaTOxFJmzC"
+    },
+    "github": {
+    	"clientID": "5dc3cefcec9402bf884d",
+		"clientSecret": "bf3f60e4856e2f3d45dee20bdfaf84368ebe3e58"
+    },
+    "facebook": {
+    	"clientID": "1934523070111165",
+    	"clientSecret": "eb29881560721a8269c95c6939c11386"
+    }
+}
