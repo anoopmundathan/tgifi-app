@@ -19,6 +19,18 @@ body {
 	margin: 0;
 }
 
+/*header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 80px;
+    background: #6a60ad;
+    color: #fafafa;
+    text-align: center;
+    padding-top: 20px;
+}
+*/
 img {
 	width: 200px;
 	height: 200px;
@@ -31,7 +43,8 @@ img {
 	background: #fafafa;
 	padding: 10px;
 	text-align: center;
-	position: fixed;
+	/*position: fixed;*/
+	border-bottom: 3px solid #6a60ad;
 }
 .nav {
 	display: flex;
