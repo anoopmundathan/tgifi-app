@@ -122,10 +122,16 @@ app.get('/', function(req, res, next) {
 
 app.get('/logout', function(req, res, next) {
 
-	// Logout route
+	// Set client side cookie to null	
+	res.clearCookie('token');
+	res.clearCookie('user');
+
+	// Delete session 
 	delete req.session.token;
 	delete req.session.user;
+
 	req.logout();
+
 	return res.redirect('/login');
 });
 

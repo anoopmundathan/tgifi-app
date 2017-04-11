@@ -19,7 +19,9 @@ router.delete('/gifis', deleteGifi);
 router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
 
+// GET /api/gifis
 function getGifis(req, res, next) {
+
 	User.findOne({
 		userName: req.session.user
 	})
@@ -27,7 +29,7 @@ function getGifis(req, res, next) {
 		if (err) return next(err);
 
 		if (user) {
-			res.json(user.gif)
+			res.json(user.gif);
 		} else {
 			res.json(user);
 		}
@@ -43,12 +45,17 @@ function saveGifi(req, res, next) {
 	.exec(function(err, user) {
 		if (err) return next(err);
 		
+		if (!user) {
+			var err = new Error('User is not found');
+			err.status = 404;
+			return next(err);
+		}
+
 		user.update({ $push: { gif: req.body.url} }, function(err, user) {
 			if (err) return next(err);
 			res.status(201);
 			res.end();
-		});
-		
+		});	
 	});
 }
 
@@ -64,7 +71,7 @@ function deleteGifi(req, res, next) {
 		if (!user) {
 			var err = new Error('User is not found');
 			err.status = 404;
-			next(err);
+			return next(err);
 		}
 		user.update({
 			$pull: {
@@ -78,6 +85,7 @@ function deleteGifi(req, res, next) {
 	});
 }
 
+// GET /api/trends
 function loadTrends(req, res, next) {
 	
 	twitter.loadTrends(function(data) {
@@ -85,9 +93,7 @@ function loadTrends(req, res, next) {
 	});
 }
 
-/**
- * Authenticate user
- */
+// GET /api/authenticate
 function authenticateUser(req, res, next) {
 
 	var userName = req.body.username;
@@ -102,12 +108,6 @@ function authenticateUser(req, res, next) {
 		});
 }
 
-/**
- * User authentication 
- * @param {Number} userName
- * @param {Number} password
- * @returns {Promise Object}
- */
 function authenticate(userName, password) {
 
 	return new Promise(function(resolve, reject) {
@@ -137,6 +137,7 @@ function authenticate(userName, password) {
 	}); // end of authPromise
 }
 
+// POST /api/register
 function registerNewUser(req, res, next) {
 	var userName = req.body.username;
 	var email = req.body.email;

@@ -48,7 +48,6 @@ app.run(function($rootScope) {
 	$rootScope.randomGifis = [];
 });
 
-
 app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
 	var vm = this;
 	

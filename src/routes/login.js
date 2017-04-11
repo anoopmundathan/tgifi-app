@@ -12,9 +12,16 @@ var API_URL = HOST + '/api/authenticate';
 // GET /login
 router.get('/', function(req, res, next) {
 	
+	// Set client side cookie to null	
+	res.clearCookie('token');
+	res.clearCookie('user');
+
+	// Delete session 
 	delete req.session.token;
 	delete req.session.user;
+
 	req.logout();
+	
 	res.render('login');
 });
 
