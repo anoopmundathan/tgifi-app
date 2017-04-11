@@ -20,8 +20,6 @@ router.post('/authenticate', authenticateUser);
 router.post('/register', registerNewUser);
 
 function getGifis(req, res, next) {
-
-
 	User.findOne({
 		userName: req.session.user
 	})
@@ -36,9 +34,8 @@ function getGifis(req, res, next) {
 	});
 }
 
+// POST /api/gifis
 function saveGifi(req, res, next) {
-
-	console.log(req.session.user);
 
 	User.findOne({ 
 		userName: req.session.user
@@ -46,31 +43,37 @@ function saveGifi(req, res, next) {
 	.exec(function(err, user) {
 		if (err) return next(err);
 		
-		console.log(user);
-		
 		user.update({ $push: { gif: req.body.url} }, function(err, user) {
 			if (err) return next(err);
-			res.send(user);
+			res.status(201);
+			res.end();
 		});
 		
 	});
 }
 
+// DELETE /api/gifis?url=value
 function deleteGifi(req, res, next) {
 	
 	User.findOne({
-		userName: req.user
+		userName: req.session.user
 	})
 	.exec(function(err, user) {
 		if (err) return next(err);
 		
+		if (!user) {
+			var err = new Error('User is not found');
+			err.status = 404;
+			next(err);
+		}
 		user.update({
 			$pull: {
 				gif: req.query.url
 			}
 		}, function(err, user) {
 			if (err) return next(err);
-			res.send(user);
+			res.status(204);
+			res.end();
 		})
 	});
 }

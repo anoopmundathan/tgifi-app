@@ -26,7 +26,6 @@ var angular = __webpack_require__(0);
 
 var app = angular.module('app', [__webpack_require__(1), __webpack_require__(2)]);
 
-
 app.config(function($routeProvider, $httpProvider, $locationProvider) {
 	
 	$httpProvider.interceptors.push('AuthInterceptor');
@@ -61,7 +60,6 @@ app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
 	MainFactory.loadMySavedGifis()
 	.then(function success(response) {
 		vm.myGifis = response.data;
-		console.log(vm.myGifis);
 	});	
 
 	// Load random Gifis
@@ -71,9 +69,11 @@ app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
 	});
 
 	function deleteGifi(url) {
+		var index = vm.myGifis.indexOf(url);
+		if (index > -1) vm.myGifis.splice(index, 1);
 		MainFactory.deleteGifi(url)
 			.then(function success(response) {
-			});
+		});
 	}
 
 	function logOut() {
@@ -96,7 +96,6 @@ app.controller('RandomGifiController', function(MainFactory, $rootScope) {
 	}
 
 	function saveThisGifi(url) {
-		console.log(url);
 		MainFactory.saveThisGifi(url)
 			.then(function success(response) {
 		});

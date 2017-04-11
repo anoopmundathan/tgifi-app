@@ -1,7 +1,7 @@
 <div class="my-container">
 	<div class = "my-gifis-container" ng-repeat = "gifi in vm.myGifis track by $index">
 		<div  class = "my-gif-img-container">
-			<img ng-src="{{gifi}}" alt=""> 
+			<img ng-click = "vm.deleteGifi(gifi)" ng-src="{{gifi}}" alt=""> 
 		</div>
 	</div>
 </div>

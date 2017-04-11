@@ -47,9 +47,11 @@ app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
 	});
 
 	function deleteGifi(url) {
+		var index = vm.myGifis.indexOf(url);
+		if (index > -1) vm.myGifis.splice(index, 1);
 		MainFactory.deleteGifi(url)
 			.then(function success(response) {
-			});
+		});
 	}
 
 	function logOut() {
@@ -72,7 +74,6 @@ app.controller('RandomGifiController', function(MainFactory, $rootScope) {
 	}
 
 	function saveThisGifi(url) {
-		console.log(url);
 		MainFactory.saveThisGifi(url)
 			.then(function success(response) {
 		});
