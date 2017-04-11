@@ -9,41 +9,40 @@ body {
 	font: normal 1.2em/1.5 "Helvetica Neue";
 }
 
-/*html {
-	background: #24292e;
-}*/
-
 body {
 	min-height: 100vh;
 	position: relative;
 	margin: 0;
+	border-bottom: 5px solid #6a60ad;
 }
 
-/*header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 80px;
-    background: #6a60ad;
-    color: #fafafa;
-    text-align: center;
-    padding-top: 20px;
-}
-*/
 img {
 	width: 200px;
 	height: 200px;
 	cursor: pointer;
 }
 
+.hash-tag,
+.my-saved-heading {
+	display: inline-block;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background: #6a60ad;
+	color: #fff;
+	padding: 5px;
+	border-radius: 3px;
+}
+
+.my-saved-container {
+	text-align: center;
+	margin: 10px 0;
+}
 .main-nav {
 	width: 100%;
 	min-height: 50px;
 	background: #fafafa;
 	padding: 10px;
 	text-align: center;
-	/*position: fixed;*/
 	border-bottom: 3px solid #6a60ad;
 }
 .nav {
@@ -72,6 +71,7 @@ a {
 
 .random-container {
 	width: 100%;
+	margin-top: 20px;
 }
 
 .gif-container {
@@ -86,6 +86,7 @@ a {
 
 .my-container {
 	width: 100%;
+	margin-top: 20px;
 }
 
 img {
@@ -100,10 +101,19 @@ img {
 		height: 180px;
 	}
 
-	.gifis-container,
-	.my-container {
-		width: 70%;
+	.gifis-container {
 		margin: 0 auto;
+	}
+
+	.my-container {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.gifis-container,
+	.my-container
+	 {
+		width: 70%;
 		display: flex;
 		flex-wrap: wrap;
 	}

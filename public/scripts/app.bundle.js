@@ -3,16 +3,30 @@ webpackJsonp([0],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(4);
-module.exports = 'ngCookies';
+"use strict";
+
+
+var angular = __webpack_require__(0);
+
+var app = angular.module('app');
+
+app.controller('MyController', __webpack_require__(7));
+app.controller('RandomGifiController', __webpack_require__(8));
+
 
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(5);
-module.exports = 'ngRoute';
+"use strict";
+
+
+var angular = __webpack_require__(0);
+
+var app = angular.module('app');
+
+app.config(__webpack_require__(9));
 
 
 /***/ }),
@@ -24,31 +38,68 @@ module.exports = 'ngRoute';
 
 var angular = __webpack_require__(0);
 
-var app = angular.module('app', [__webpack_require__(1), __webpack_require__(2)]);
+var app = angular.module('app');
 
-app.config(function($routeProvider, $httpProvider, $locationProvider) {
-	
-	$httpProvider.interceptors.push('AuthInterceptor');
-	$locationProvider.hashPrefix('');
+app.service('mainFactory', __webpack_require__(10));
+app.service('authInterceptor', __webpack_require__(11));
 
-	$routeProvider
-		.when('/', {
-			controller: 'MainController',
-			controllerAs: 'vm',
-			templateUrl: 'templates/gifis.html'
-		})
-		.when('/random', {
-			controller: 'RandomGifiController',
-			controllerAs: 'vm',
-			templateUrl: 'templates/random.html'
-		});
-});
 
-app.run(function($rootScope) {
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(12);
+module.exports = 'ngCookies';
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(13);
+module.exports = 'ngRoute';
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var angular = __webpack_require__(0);
+
+var app = angular.module('app', [
+	__webpack_require__(4), 
+	__webpack_require__(5)
+]).run(function($rootScope) {
 	$rootScope.randomGifis = [];
 });
 
-app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
+__webpack_require__(2);
+__webpack_require__(1);
+__webpack_require__(3);
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function MyController(mainFactory, $cookies) {
+
 	var vm = this;
 	
 	vm.logOut = logOut;
@@ -56,21 +107,15 @@ app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
 	vm.user = $cookies.get('user');
 	
 	// Load Saved Gifis
-	MainFactory.loadMySavedGifis()
+	mainFactory.loadMySavedGifis()
 	.then(function success(response) {
 		vm.myGifis = response.data;
 	});	
 
-	// Load random Gifis
-	MainFactory.loadRandomGifis()
-		.then(function success(response) {
-			$rootScope.randomGifis = response.data;
-	});
-
 	function deleteGifi(url) {
 		var index = vm.myGifis.indexOf(url);
 		if (index > -1) vm.myGifis.splice(index, 1);
-		MainFactory.deleteGifi(url)
+		mainFactory.deleteGifi(url)
 			.then(function success(response) {
 		});
 	}
@@ -78,37 +123,85 @@ app.controller('MainController', function(MainFactory, $rootScope, $cookies) {
 	function logOut() {
 		alert('logout');
 	}
-});
+}
 
-app.controller('RandomGifiController', function(MainFactory, $rootScope) {
+module.exports = MyController;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function RandomGifiController(mainFactory, $rootScope) {
 	var vm = this;
 
-	vm.randomGifis = $rootScope.randomGifis;
+	vm.randomGifis = [];
 	vm.saveThisGifi = saveThisGifi;
 
 	if ($rootScope.randomGifis.length < 1) {
-		MainFactory.loadRandomGifis()
-			.then(function success(response) {
-				vm.randomGifis = response.data;
-				$rootScope.randomGifis = vm.randomGifis;
+		mainFactory.loadRandomGifis()
+		.then(function success(response) {
+			vm.randomGifis = response.data;
+			$rootScope.randomGifis = response.data;
 		});
+	} else {
+		vm.randomGifis = $rootScope.randomGifis;
 	}
-
+	
 	function saveThisGifi(url) {
-		MainFactory.saveThisGifi(url)
+		mainFactory.saveThisGifi(url)
 			.then(function success(response) {
 		});
 	}
-});
+}
 
-app.factory('MainFactory', function($http) {
+module.exports = RandomGifiController;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+function config($routeProvider, $httpProvider, $locationProvider) {
+	
+	$httpProvider.interceptors.push('authInterceptor');
+
+	$locationProvider.hashPrefix('');
+
+	$routeProvider
+		.when('/', {
+			controller: 'RandomGifiController',
+			controllerAs: 'vm',
+			templateUrl: 'templates/random.html'
+		})
+		.when('/my', {
+			controller: 'MyController',
+			controllerAs: 'vm',
+			templateUrl: 'templates/my-gifis.html'
+		});
+}
+
+module.exports = config;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function MainFactory($http) {
 	return {
 		loadRandomGifis: loadRandomGifis,
 		saveThisGifi: saveThisGifi,
 		deleteGifi: deleteGifi,
 		loadMySavedGifis: loadMySavedGifis
 	}
-
 
 	function loadRandomGifis() {
 		return $http.get('/api/trends');
@@ -125,9 +218,18 @@ app.factory('MainFactory', function($http) {
 	function deleteGifi(url) {
 		return $http.delete('/api/gifis?url=' + url );
 	}
-});
+}
 
-app.factory('AuthInterceptor', function($cookies) {
+module.exports = MainFactory;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function AuthInterceptor($cookies) {
 	return {
 		request: addValue
 	}
@@ -141,11 +243,12 @@ app.factory('AuthInterceptor', function($cookies) {
 		}
 		return config;
 	}
-});
+}
 
+module.exports = AuthInterceptor;
 
 /***/ }),
-/* 4 */
+/* 12 */
 /***/ (function(module, exports) {
 
 /**
@@ -482,7 +585,7 @@ angular.module('ngCookies').provider('$$cookieWriter', /** @this */ function $$C
 
 
 /***/ }),
-/* 5 */
+/* 13 */
 /***/ (function(module, exports) {
 
 /**
@@ -1717,4 +1820,4 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 
 /***/ })
-],[3]);
+],[6]);
