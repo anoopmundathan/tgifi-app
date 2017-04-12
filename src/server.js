@@ -23,23 +23,6 @@ var ghConfig = require('../config/config').github;
 
 var app = express();
 
-function generateOrFindUser(accessToken, refreshToken, profile, done) {
-	if (profile.emails) {
-		User.findOneAndUpdate({
-			email: profile.emails[0].value
-		}, {
-			userName: profile.username || profile.displayName,
-			email: profile.emails[0].value,
-			photo: profile.photos[0].value
-		}, {
-			upsert: true
-		}, done);
-	} else {
-		var noEmailError = new Error('Your email privacy settings prevent you from login to tgifi');
-		done(noEmailError, null);
-	}
-}
-
 // sets port, host, and callback_url either with heroku constants or locally
 var PORT = process.env.PORT || 3000;
 var HOST = process.env.PROD_HOST || 'http://localhost:' + PORT;
@@ -49,7 +32,7 @@ passport.use(new GitHubStrategy({
 	clientID: process.env.GITHUB_CLIENT_ID || ghConfig.clientID,
 	clientSecret: process.env.GITHUB_CLIENT_SECRET || ghConfig.clientSecret,
 	callbackURL: HOST + '/auth/github/return'
-}, generateOrFindUser));
+}, require('./controllers/finduser')));
 
 // Configure Facebook strategy
 passport.use(new FacebookStrategy({
@@ -57,7 +40,7 @@ passport.use(new FacebookStrategy({
     clientSecret: process.env.FACEBOOK_APP_SECRET || fbConfig.clientSecret,
     callbackURL: HOST + '/auth/facebook/return',
     profileFields: ['id', 'displayName', 'photos', 'email']
-}, generateOrFindUser));
+}, require('./controllers/finduser')));
 
 // In order to use session for passport
 passport.serializeUser(function(user, done) {
@@ -151,3 +134,4 @@ app.use(function(err, req, res, next) {
 app.listen(PORT, function() {
 	console.log('Server running at port ', PORT);
 });
+
