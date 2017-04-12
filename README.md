@@ -2,7 +2,7 @@
 
 > Treehouse - Project12 - Capstone Project
 
-MEAN application - Pull random popular hashtags from [Twitter](https://dev.twitter.com/rest/public) and display a corresponding gif using [Giphy](https://api.giphy.com/)
+MEAN application - Pull random popular hashtags from [Twitter](https://dev.twitter.com/rest/public) and display a corresponding gif using [Giphy](https://api.giphy.com/). It allows to save gif into your list and also to delete from your list in a single click.
 
 [Click here for Live demo](https://tgifi-app.herokuapp.com/login)
 
