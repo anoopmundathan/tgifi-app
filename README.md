@@ -4,6 +4,8 @@
 
 MEAN application - Pull random popular hashtags from [Twitter](https://dev.twitter.com/rest/public) and display a corresponding gif using [Giphy](https://api.giphy.com/)
 
+[Click here for Live demo](https://tgifi-app.herokuapp.com/login)
+
 ## Getting Started
 
 ### Setup
