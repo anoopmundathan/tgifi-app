@@ -7,6 +7,7 @@
 html,
 body {
 	font: normal 1.2em/1.5 "Helvetica Neue";
+	color: #2e3d49;
 }
 
 body {
@@ -21,7 +22,7 @@ img {
 	height: 200px;
 	cursor: pointer;
 }
-
+ 
 .hash-tag,
 .my-saved-heading {
 	display: inline-block;
@@ -38,12 +39,15 @@ img {
 	margin: 10px 0;
 }
 .main-nav {
+	top: 0;
 	width: 100%;
 	min-height: 50px;
 	background: #fafafa;
 	padding: 10px;
 	text-align: center;
-	border-bottom: 3px solid #6a60ad;
+	border-bottom: 1px solid #6a60ad;
+    box-shadow: 0 1px 4px rgba(0,0,0,.4);
+    position: fixed;
 }
 .nav {
 	display: flex;
@@ -51,6 +55,11 @@ img {
 	list-style-type: none;
 	margin: 0 auto;
 	padding: 0;
+}
+
+.app-name {
+	margin: 0;
+	font-size: 1.2em;
 }
 
 .nav li {
@@ -71,7 +80,7 @@ a {
 
 .random-container {
 	width: 100%;
-	margin-top: 20px;
+	margin-top: 120px;
 }
 
 .gif-container {
@@ -86,7 +95,7 @@ a {
 
 .my-container {
 	width: 100%;
-	margin-top: 20px;
+	margin-top: 100px;
 }
 
 img {

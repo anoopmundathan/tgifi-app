@@ -19,6 +19,11 @@ router.use('/', function(req, res, next) {
 	res.cookie('user', req.session.user);
 	next();
 },
-	express.static(path.join(__dirname, '..', '..', 'public')));
+
+	express.static(path.join(__dirname, '..', '..', 'build')));
+
+	// Serve static file from build folder if env is production
+	// express.static(process.env.NODE_ENV === 'production' ?
+	// 	path.join(__dirname, '..', '..', 'build') : path.join(__dirname, '..', '..', 'public')));
 
 module.exports = router;
